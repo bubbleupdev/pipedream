@@ -40,9 +40,18 @@ jobs:
                 echo "Publishing ${file} --profile $PD_API_ORG."
                 set +e
                 ./pd publish ${file} --profile $PD_API_ORG
-                echo "Publish ${file} finished."
+                if [ $? -eq 0 ]; then
+                  echo "Publish ${file} finished."
+                else
+                  echo "Publish ${file} FAILED." >> errors.txt
+                fi
                 set -e
               else
                 echo "Skipping file ${file}."
             fi
           done
+          if [-f errors.txt]; then
+            cat errors.txt
+            echo "There were ERRORS while processing GITHUB ACTION. Please check the errors.txt file for details."
+            exit 1
+          fi
