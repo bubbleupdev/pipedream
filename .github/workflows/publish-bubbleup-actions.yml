@@ -40,6 +40,7 @@ jobs:
                 echo "Publishing ${file} --profile $PD_API_ORG."
                 set -e
                 ./pd publish ${file} --profile $PD_API_ORG
+                echo "Publish ${file} finished."
                 set +e
               else
                 echo "Skipping file ${file}."

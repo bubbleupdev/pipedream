@@ -86,5 +86,4 @@ export default {
     $.export("$summary", `Successfully created a new folder, "${resp.name}"`);
     return resp;
   },
-
 };
