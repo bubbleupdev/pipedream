@@ -38,7 +38,9 @@ jobs:
             if [[ $file == *.mjs ]]
               then
                 echo "Publishing ${file} --profile $PD_API_ORG."
+                set -e
                 ./pd publish ${file} --profile $PD_API_ORG
+                set +e
               else
                 echo "Skipping file ${file}."
             fi
