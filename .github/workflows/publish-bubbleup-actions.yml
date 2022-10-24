@@ -50,7 +50,7 @@ jobs:
                 echo "Skipping file ${file}."
             fi
           done
-          if [ -f errors.txt]; then
+          if [ -f errors.txt ]; then
             cat errors.txt
             echo "There were ERRORS while processing GITHUB ACTION. Please check the errors.txt file for details."
             exit 1
