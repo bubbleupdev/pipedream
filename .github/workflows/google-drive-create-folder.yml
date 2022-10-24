@@ -2,7 +2,7 @@ name: Google Drive Create Folder - Pipedream Step
 on:
   push:
     paths:
-      - components/google_drive/actions/create-folder/**
+      - components/google_drive/actions/create-folder-bu/**
 
 jobs:
   publish-components:
