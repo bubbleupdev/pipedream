@@ -1,0 +1,45 @@
+name: Google Drive Create Folder - Pipedream Step
+on:
+  push:
+    paths:
+      - components/google_drive/actions/create-folder/**
+
+jobs:
+  publish-components:
+    name: Publish Components to Pipedream Registry
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3.1.0
+      - name: Install Pipedrem CLI
+        env:
+          PD_API_ORG: ${{ secrets.PD_API_ORG }}
+          PD_API_KEY: ${{ secrets.PD_API_KEY }}
+          PD_API_ORG_ID: ${{ secrets.PD_API_ORG_ID }}
+        run: |
+          curl -O https://cli.pipedream.com/linux/amd64/latest/pd.zip
+          unzip pd.zip
+          mkdir -p $HOME/.config/pipedream
+          echo "[$PD_API_ORG]" >> $HOME/.config/pipedream/config
+          echo "api_key = $PD_API_KEY" >> $HOME/.config/pipedream/config
+          echo "org_id = $PD_API_ORG_ID" >> $HOME/.config/pipedream/config
+          cat $HOME/.config/pipedream/config
+      - name: Get Changed Files
+        id: files
+        uses: jitterbit/get-changed-files@v1
+        with:
+          format: 'json'
+      - name: Publish Changed File(s)
+        env:
+          PD_API_ORG: ${{ secrets.PD_API_ORG }}
+        run: |
+          readarray -t files <<<"$(jq -r '.[]' <<<'${{ steps.files.outputs.added_modified }}')"
+          for file in ${files[@]}; do
+            if [[ $file == *.mjs ]]
+              then
+                echo "Publishing ${file} --profile $PD_API_ORG."
+                ./pd publish ${file} --profile $PD_API_ORG
+              else
+                echo "Skipping file ${file}."
+            fi
+          done
