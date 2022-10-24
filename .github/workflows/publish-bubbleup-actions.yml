@@ -1,8 +1,8 @@
-name: Google Drive Create Folder - Pipedream Step
+name: Publish BubbleUp Actions
 on:
   push:
     paths:
-      - components/google_drive/actions/create-folder-bu/**
+      - components/*/actions/*-bu/**
 
 jobs:
   publish-components:
@@ -11,7 +11,7 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3.1.0
-      - name: Install Pipedrem CLI
+      - name: Install Pipedream CLI
         env:
           PD_API_ORG: ${{ secrets.PD_API_ORG }}
           PD_API_KEY: ${{ secrets.PD_API_KEY }}
