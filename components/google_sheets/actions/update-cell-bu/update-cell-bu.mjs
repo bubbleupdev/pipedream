@@ -9,8 +9,8 @@ const spreadsheetProps = [
 ];
 
 export default {
-  key        : "update-cell-v2",
-  name       : "Update Cell V2",
+  key        : "update-cell-bu",
+  name       : "Update Cell BU",
   description: "Update a cell in a spreadsheet",
   version    : "0.0.1",
   type       : "action",
