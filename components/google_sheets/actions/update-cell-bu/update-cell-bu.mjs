@@ -12,7 +12,7 @@ export default {
   key        : "update-cell-bu",
   name       : "Update Cell BU",
   description: "Update a cell in a spreadsheet",
-  version    : "0.0.1",
+  version    : "0.0.2",
   type       : "action",
   props      : {
     googleSheets,
