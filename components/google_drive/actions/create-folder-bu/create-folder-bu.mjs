@@ -10,7 +10,7 @@ export default {
   key: "google_drive-create-folder",
   name: "Create Folder BU",
   description: "Create a new empty folder. [See the docs](https://developers.google.com/drive/api/v3/reference/files/create) for more information",
-  version: "0.0.12",
+  version: "0.0.13",
   type: "action",
   props: {
     googleDrive,
@@ -66,16 +66,13 @@ export default {
       var folders;
       if(nameIncludesDoubleQuote && nameIncludesSingleQuote){
         let adjustedName = name.replace(/"/g, "'");
-        // Need to replace double quotes with single quotes
         folders = (await this.googleDrive.listFilesInPage(null, getListFilesOpts(this.drive,{q: `mimeType = "${GOOGLE_DRIVE_FOLDER_MIME_TYPE}" and name contains "${adjustedName}" and trashed=false`.trim(),}))).files;
       } else if(nameIncludesDoubleQuote){
         folders = (await this.googleDrive.listFilesInPage(null, getListFilesOpts(this.drive, {q: `mimeType = '${GOOGLE_DRIVE_FOLDER_MIME_TYPE}' and name contains '${name}' and trashed=false`.trim(),}))).files;
       } else {
         folders = (await this.googleDrive.listFilesInPage(null, getListFilesOpts(this.drive,{q: `mimeType = "${GOOGLE_DRIVE_FOLDER_MIME_TYPE}" and name contains "${name}" and trashed=false`.trim(),}))).files;
       }
-      console.log("folders: " + folders);
       for (let f of folders) {
-        console.log("folder: " + f.name);
         if (f.name == name) {
           folder = f;
           break;
