@@ -10,7 +10,7 @@ export default {
   key: "google_drive-create-folder",
   name: "Create Folder BU",
   description: "Create a new empty folder. [See the docs](https://developers.google.com/drive/api/v3/reference/files/create) for more information",
-  version: "0.0.8",
+  version: "0.0.9",
   type: "action",
   props: {
     googleDrive,
@@ -62,7 +62,7 @@ export default {
     let folder;
     if (createIfExists == false) {//checking "false" because if this optional prop may not be given
       console.log("this.name: " + name);
-      let query = 'mimeType = ' + GOOGLE_DRIVE_FOLDER_MIME_TYPE + ' and name contains "' + name + '" and trashed=false';
+      let query = 'mimeType = "' + GOOGLE_DRIVE_FOLDER_MIME_TYPE + '" and name contains "' + name + '" and trashed=false';
       console.log("query: " + query);
       const folders = (await this.googleDrive.listFilesInPage(null, getListFilesOpts(this.drive, {q: query.trim(),}))).files;
       console.log("folders: " + folders);
