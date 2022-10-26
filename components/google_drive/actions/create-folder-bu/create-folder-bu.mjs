@@ -62,9 +62,10 @@ export default {
     let folder;
     if (createIfExists == false) {//checking "false" because if this optional prop may not be given
       console.log("this.name: " + name);
-      let query = "mimeType = " + GOOGLE_DRIVE_FOLDER_MIME_TYPE + " and name contains " + name + " and trashed=false";
+      let query = 'mimeType = ' + GOOGLE_DRIVE_FOLDER_MIME_TYPE + ' and name contains "' + name + '" and trashed=false';
+      console.log("query: " + query);
       const folders = (await this.googleDrive.listFilesInPage(null, getListFilesOpts(this.drive, {q: query.trim(),}))).files;
-      console.log("found folders: " + folders);
+      console.log("folders: " + folders);
       for (let f of folders) {
         if (f.name == name) {
           folder = f;
