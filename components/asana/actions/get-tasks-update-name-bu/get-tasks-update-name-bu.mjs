@@ -2,7 +2,7 @@ import asana from "../../asana.app.mjs";
 
 export default {
 	name       : "Get Tasks Update Name BU",
-	version    : "0.0.2",
+	version    : "0.0.3",
 	key        : "get-tasks-update-name-bu",
 	description: "",
 	props      : {
@@ -41,7 +41,7 @@ export default {
 			if(taskGid === undefined) {
 				taskData.data = `${taskName} task not found after waiting 10+ seconds. ${taskName} due date not updated.`;
 			} else {
-				let NewTaskName = this.tour_name + " " + this.tour_year + " " + taskListArray[t].trim();
+				let NewTaskName = this.tour_name + " " + this.tour_year + " - " + taskListArray[t].trim();
 				taskData = await updateTaskName($, this, taskGid, NewTaskName);
 			}
 			updatedData.push(taskData);
