@@ -1,4 +1,4 @@
-import { boxApi } from "../../common/bu.mjs"
+import { boxApi } from "../../common/api.mjs"
 
 export default defineComponent({
   name: "Find/Create Folder (BU)",

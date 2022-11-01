@@ -1,4 +1,4 @@
-export class boxApi {
+export default class boxApi {
 
     constructor(step) {
         this.accessToken = step.box.$auth.oauth_access_token
