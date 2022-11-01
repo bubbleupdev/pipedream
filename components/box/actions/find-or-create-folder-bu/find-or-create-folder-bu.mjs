@@ -2,7 +2,7 @@ import { boxApi } from "../../common/api.mjs"
 
 export default defineComponent({
   name: "Find/Create Folder (BU)",
-  version: "0.0.3",
+  version: "0.0.4",
   key: "find-or-create-folder-bu",
   description: "Find a subfolder by name or create it if it doesn't exist.",
   type: "action",
@@ -26,8 +26,10 @@ export default defineComponent({
   async run({ steps, $ }) {
     const $box = new boxApi(this)
     const dirs = this.target.split('/')
-    return await dirs.reduce(async (prev, cur) => {
-      return await $box.findOrCreateFolder(cur)
-    })
+    let parent = this.parentFolderId
+    for (const dir of dirs) {
+      parent = await $box.findOrCreateFolder(parent, dir)
+    }
+    return parent
   },
 })

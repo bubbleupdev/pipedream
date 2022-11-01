@@ -8,7 +8,7 @@ export class boxApi {
 
     async findOrCreateFolder(parentId, folderName) {
         const list = await this.listDir(parentId)
-        let dir = findDir(list, folderName)
+        let dir = this.findDir(list, folderName)
         if (!dir) {
             const createRes = await this.post(`/folders`, {
                 name: folderName,
