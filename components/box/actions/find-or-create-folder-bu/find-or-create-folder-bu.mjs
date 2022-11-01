@@ -2,7 +2,7 @@ import { boxApi } from "../../common/api.mjs"
 
 export default defineComponent({
   name: "Find/Create Folder (BU)",
-  version: "0.0.1",
+  version: "0.0.2",
   key: "find-or-create-folder-bu",
   description: "Find a subfolder by name or create it if it doesn't exist.",
   type: "action",
