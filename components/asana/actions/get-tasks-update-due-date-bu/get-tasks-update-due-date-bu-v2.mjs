@@ -2,7 +2,7 @@ import asana from "../../asana.app.mjs";
 
 export default {
 	name       : "Get Tasks Update Due Date BU",
-	version    : "0.0.2",
+	version    : "0.0.1",
 	key        : "get-tasks-update-due-date-bu",
 	description: "",
 	props      : {
