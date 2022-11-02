@@ -18,6 +18,7 @@ export default {
 			type       : "string",
 		}
 	},
+	type       : "action",
 	methods    : {},
 	async run({$}) {
 		return await returnAllTasks($, this);
