@@ -5,14 +5,17 @@ const spreadsheetProps = [
   "Tour Director",
   "Tour Marketer",
   "Ticketing Director",
-  "Rome Tour Booking ID (TOU-000000)"
+  "Target Announce",
+  "Target Public Onsale",
+  "Start Date of Tour",
+  "Rome Tour Marketing ID (TOU-000000)"
 ];
 
 export default {
   key        : "update-cell-bu",
   name       : "Update Cell BU",
   description: "Update a cell in a spreadsheet",
-  version    : "0.0.2",
+  version    : "0.0.3",
   type       : "action",
   props      : {
     googleSheets,
@@ -59,9 +62,24 @@ export default {
       label   : spreadsheetProps[3],
       optional: true,
     },
-    romeTourBookingID: {
+    targetAnnounce: {
       type    : "string",
       label   : spreadsheetProps[4],
+      optional: true,
+    },
+    targetPublicOnsale: {
+      type    : "string",
+      label   : spreadsheetProps[5],
+      optional: true,
+    },
+    startDateofTour: {
+      type    : "string",
+      label   : spreadsheetProps[6],
+      optional: true,
+    },
+    romeTourMarketingID: {
+      type    : "string",
+      label   : spreadsheetProps[7],
       optional: true,
     },
   },
@@ -71,7 +89,10 @@ export default {
         this.tourDirector,
         this.tourMarketer,
         this.ticketingDirector,
-        this.romeTourBookingID,
+        this.targetAnnounce,
+        this.targetPublicOnsale,
+        this.startDateofTour,
+        this.romeTourMarketingID,
     ]
     let sheetValues = this.sheetValues;
     var values = [];
