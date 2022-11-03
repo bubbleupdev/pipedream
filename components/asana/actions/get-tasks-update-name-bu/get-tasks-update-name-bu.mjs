@@ -2,7 +2,7 @@ import asana from "../../asana.app.mjs";
 
 export default {
 	name       : "Get Tasks Update Name BU",
-	version    : "0.0.5",
+	version    : "0.0.6",
 	key        : "get-tasks-update-name-bu",
 	description: "",
 	props      : {
@@ -63,7 +63,7 @@ export default {
 	},
 	async run({$}) {
 		let tasksToUpdate;
-		if(this.task_list_to_update.length){
+		if(typeof this.task_list_to_update != 'undefined'){
 			tasksToUpdate = await getIndividualTasks($, this);
 		}else{
 			tasksToUpdate = this.all_project_tasks_data;
