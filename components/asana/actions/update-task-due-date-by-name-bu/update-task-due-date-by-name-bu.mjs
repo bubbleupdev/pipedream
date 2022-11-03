@@ -2,7 +2,7 @@ import asana from "../../asana.app.mjs";
 
 export default {
 	name       : "Update Task Due Date By Name BU",
-	version    : "0.0.1",
+	version    : "0.0.2",
 	key        : "update-task-due-date-by-name-bu",
 	description: "Custom built to update tasks returned from get_all_project_tasks step",
 	props      : {
@@ -19,7 +19,7 @@ export default {
       },
       get_all_project_tasks_data: {
           label      : "Data from get_all_project_tasks step",
-          description: "Example: {{steps.get_all_project_tasks.$return_value.data}}",
+          description: "Example: {{steps.get_all_tasks_in_project_bu.$return_value}}",
           type       : "string",
       },
 	},
