@@ -2,7 +2,7 @@ import asana from "../../asana.app.mjs";
 
 export default {
 	name       : "Get Tasks Update Name BU",
-	version    : "0.0.7",
+	version    : "0.0.8",
 	key        : "get-tasks-update-name-bu",
 	description: "",
 	props      : {
@@ -96,7 +96,7 @@ async function updateTaskNames($, step, tasksToUpdate){
 		let NewTaskName = step.tour_name + " " + step.tour_year + " - " + tasksToUpdate[t].name;
 
 		taskData = await updateTaskName($, step, tasksToUpdate[t].gid, NewTaskName);
-		updatedData.push(taskData);
+		updatedData.push(taskData.name);
 	}
 	return updatedData;
 }
