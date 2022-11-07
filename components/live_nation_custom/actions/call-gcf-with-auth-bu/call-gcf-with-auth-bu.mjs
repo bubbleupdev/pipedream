@@ -1,4 +1,7 @@
 module.exports = defineComponent({
+	name   : "Call GCF With Auth",
+	version: "0.0.1",
+	key    : "call-gcf-with-auth",
 	props: {
 		google_cloud: {
 			type: "app",
