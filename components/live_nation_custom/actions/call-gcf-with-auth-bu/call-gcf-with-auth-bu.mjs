@@ -8,6 +8,8 @@ module.exports = defineComponent({
 			app : "google_cloud",
 		}
 	},
+	type   : "action",
+	methods: {},
 	async run({steps, $}) {
 		const key = JSON.parse(this.google_cloud.$auth.key_json)
 		const {JWT} = require('google-auth-library');
