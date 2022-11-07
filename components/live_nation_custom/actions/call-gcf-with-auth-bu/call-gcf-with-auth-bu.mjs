@@ -36,4 +36,5 @@ module.exports = defineComponent({
 
 		return await main()
 	},
+
 })
