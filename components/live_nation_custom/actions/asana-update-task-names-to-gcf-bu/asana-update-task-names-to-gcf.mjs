@@ -1,6 +1,6 @@
 module.exports = defineComponent({
 	name   : "Asana Update Task Names To GCF",
-	version: "0.0.1",
+	version: "0.0.2",
 	key    : "asana-update-task-names-to-gcf-bu",
 	props: {
 		google_cloud: {
@@ -35,7 +35,7 @@ module.exports = defineComponent({
 		    ['Authorization', `Bearer ${token}`],
 		    ['Content-Type', `application/json`]
 		  ]);
-		  client.request({url,headers,method: 'POST',data: step.all_project_tasks_data});
+		  client.request({url,headers,method: 'POST',data: {data: step.all_project_tasks_data}});
 		  return `Triggered ${step.gcf_trigger}`
 		}
 		return await main(this);
