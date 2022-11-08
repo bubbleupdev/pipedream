@@ -42,7 +42,7 @@ module.exports = defineComponent({
 		  payload.custom_fields = step.data_object;
 		  console.log(payload);
 		  client.request({url,headers,method: 'POST',data: payload});
-		  return `Triggered ${this.gcf_trigger}`
+		  return `Triggered ${step.gcf_trigger}`
 		}
 		return await main(this);
 	},
