@@ -1,6 +1,6 @@
 module.exports = defineComponent({
 	name   : "Call GCF With Auth",
-	version: "0.0.3",
+	version: "0.0.4",
 	key    : "call-gcf-with-auth",
 	props: {
 		google_cloud: {
@@ -40,10 +40,7 @@ module.exports = defineComponent({
 				]
 			]);
 			const payload = this.data;
-			const res = await client.request({
-				url, headers, method: 'POST',
-				data                : JSON.stringify(payload)
-			});
+			const res = await client.request({url, headers, method: 'POST',data : payload});
 			console.log(res.data);
 		}
 
