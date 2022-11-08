@@ -11,6 +11,10 @@ module.exports = defineComponent({
 			label: "GCF http trigger url",
 			type : "string",
 		},
+		tour_name_year: {
+			label: "Tour Name and Year",
+			type : "string",
+		},
 		all_project_tasks_data: {
 			label      : "All Project Tasks Data",
 			description: "Use 'Get All Tasks In Project BU' step prior to this and add the return value. Example: {{steps.get_all_tasks_in_project_bu.$return_value}}",
@@ -35,7 +39,10 @@ module.exports = defineComponent({
 		    ['Authorization', `Bearer ${token}`],
 		    ['Content-Type', `application/json`]
 		  ]);
-		  client.request({url,headers,method: 'POST',data: {data: step.all_project_tasks_data}});
+		  let payload = {"tour_name_year": step.tour_name_year};
+		  payload.all_project_tasks_data = step.all_project_tasks_data;
+		  console.log(payload);
+		  client.request({url,headers,method: 'POST',data: payload});
 		  return `Triggered ${step.gcf_trigger}`
 		}
 		return await main(this);
