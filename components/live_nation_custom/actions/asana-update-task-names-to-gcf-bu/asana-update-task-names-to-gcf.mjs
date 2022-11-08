@@ -1,6 +1,6 @@
 module.exports = defineComponent({
 	name   : "Asana Update Task Names To GCF",
-	version: "0.0.2",
+	version: "0.0.3",
 	key    : "asana-update-task-names-to-gcf-bu",
 	props: {
 		google_cloud: {
