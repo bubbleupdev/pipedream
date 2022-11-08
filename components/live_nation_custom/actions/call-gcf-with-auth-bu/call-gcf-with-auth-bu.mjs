@@ -1,12 +1,20 @@
 module.exports = defineComponent({
 	name   : "Call GCF With Auth",
-	version: "0.0.2",
+	version: "0.0.3",
 	key    : "call-gcf-with-auth",
 	props: {
 		google_cloud: {
 			type: "app",
 			app : "google_cloud",
-		}
+		},
+		gcf_trigger: {
+			label: "GCF http trigger url",
+			type : "string",
+		},
+		data   : {
+			label: "JSON data to send to GCF",
+			type : "string",
+		},
 	},
 	type   : "action",
 	methods: {},
@@ -15,7 +23,7 @@ module.exports = defineComponent({
 		const {JWT} = require('google-auth-library');
 
 		async function main() {
-			const url = `https://us-central1-live-nation-358920.cloudfunctions.net/asana-add-custom-field-data-to-tasks`;
+			const url = this.gcf_trigger;
 			const client = new JWT({
 				email: key.client_email,
 				key  : key.private_key,
@@ -31,7 +39,7 @@ module.exports = defineComponent({
 					`application/json`
 				]
 			]);
-			const payload = {"task_ids": ["1203247329009629"], "custom_fields": {"1203162503620378": "marketing brief link"}}
+			const payload = this.data;
 			const res = await client.request({
 				url, headers, method: 'POST',
 				data                : JSON.stringify(payload)
@@ -41,5 +49,4 @@ module.exports = defineComponent({
 
 		return await main()
 	},
-
 })
