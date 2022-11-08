@@ -1,6 +1,6 @@
 module.exports = defineComponent({
 	name   : "Asana Custom Fields To GCF",
-	version: "0.0.1",
+	version: "0.0.2",
 	key    : "asana-custom-fields-to-gcf",
 	props: {
 		google_cloud: {
