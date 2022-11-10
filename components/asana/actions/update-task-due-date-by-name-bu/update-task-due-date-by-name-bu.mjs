@@ -2,7 +2,7 @@ import asana from "../../asana.app.mjs";
 
 export default {
 	name       : "Update Task Due Date By Name BU",
-	version    : "0.0.2",
+	version    : "0.0.3",
 	key        : "update-task-due-date-by-name-bu",
 	description: "Custom built to update tasks returned from get_all_project_tasks step",
 	props      : {
@@ -28,14 +28,12 @@ export default {
 	async run({$}) {
 		const taskGid = getTaskGid(this, $);
         const formattedDueDate = formatDueDate(this.due_on);
-		const response = await this.asana._makeRequest(`tasks/${taskGid}`, {
-			method: "put",
-			data  : {
-				data: {
-					due_on: formattedDueDate,
-				},
-			},
-		}, $);
+		let response;
+		if(taskGid !== ""){
+			response = await updateDueDate(this, $, taskGid, formattedDueDate);
+		}else{
+			response = "Task not found in project! Please check the name of the task.";
+		}
 
 		return response;
 	},
@@ -64,4 +62,16 @@ function getTaskGid(step, $) {
 		}
 	}
 	return "";
+}
+
+async function updateDueDate($, taskGid, formattedDueDate){
+	let response = await this.asana._makeRequest(`tasks/${taskGid}`, {
+		method: "put",
+		data  : {
+			data: {
+				due_on: formattedDueDate,
+			},
+		},
+	}, $);
+	return response;
 }
