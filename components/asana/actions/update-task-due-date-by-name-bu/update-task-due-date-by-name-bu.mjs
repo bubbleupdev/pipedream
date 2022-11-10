@@ -2,7 +2,7 @@ import asana from "../../asana.app.mjs";
 
 export default {
 	name       : "Update Task Due Date By Name BU",
-	version    : "0.0.3",
+	version    : "0.0.4",
 	key        : "update-task-due-date-by-name-bu",
 	description: "Custom built to update tasks returned from get_all_project_tasks step",
 	props      : {
@@ -64,8 +64,8 @@ function getTaskGid(step, $) {
 	return "";
 }
 
-async function updateDueDate($, taskGid, formattedDueDate){
-	let response = await this.asana._makeRequest(`tasks/${taskGid}`, {
+async function updateDueDate(step, $, taskGid, formattedDueDate){
+	let response = await step.asana._makeRequest(`tasks/${taskGid}`, {
 		method: "put",
 		data  : {
 			data: {
