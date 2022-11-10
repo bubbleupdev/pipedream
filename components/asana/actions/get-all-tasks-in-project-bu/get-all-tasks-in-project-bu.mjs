@@ -2,7 +2,7 @@ import asana from "../../asana.app.mjs";
 
 export default {
 	name       : "Get All Tasks In Project BU",
-	version    : "0.0.3",
+	version    : "0.0.4",
 	key        : "get-all-tasks-in-project-bu",
 	description: "",
 	props      : {
@@ -27,8 +27,8 @@ export default {
 
 async function returnAllTasks($, step) {
 	return await new Promise(resolve => {
+		let trys = 1;
 		let checkForTaskCreated = setInterval(async function() {
-			let trys = 1;
 			let allTasksArray = await getAllTasks($, step);
 			if(allTasksArray.data.length >= step.number_of_tasks_in_project){
 				clearInterval(checkForTaskCreated);
