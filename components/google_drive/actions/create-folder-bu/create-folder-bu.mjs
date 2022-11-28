@@ -10,7 +10,7 @@ export default {
   key: "google_drive-create-folder",
   name: "Create Folder BU",
   description: "Create a new empty folder. [See the docs](https://developers.google.com/drive/api/v3/reference/files/create) for more information",
-  version: "0.0.17",
+  version: "0.0.18",
   type: "action",
   props: {
     googleDrive,
@@ -66,11 +66,11 @@ export default {
       var folders;
       if(nameIncludesDoubleQuote && nameIncludesSingleQuote){
         let adjustedName = name.replace(/"/g, "'");
-        folders = (await this.googleDrive.listFilesInPage(null, getListFilesOpts(this.parentId,{q: `mimeType = "${GOOGLE_DRIVE_FOLDER_MIME_TYPE}" and name contains "${adjustedName}" and trashed=false`.trim(),}))).files;
+        folders = (await this.googleDrive.listFilesInPage(null, getListFiles(this.parentId,{q: `mimeType = "${GOOGLE_DRIVE_FOLDER_MIME_TYPE}" and name contains "${adjustedName}" and trashed=false`.trim(),}))).files;
       } else if(nameIncludesDoubleQuote){
-        folders = (await this.googleDrive.listFilesInPage(null, getListFilesOpts(this.parentId, {q: `mimeType = '${GOOGLE_DRIVE_FOLDER_MIME_TYPE}' and name contains '${name}' and trashed=false`.trim(),}))).files;
+        folders = (await this.googleDrive.listFilesInPage(null, getListFiles(this.parentId, {q: `mimeType = '${GOOGLE_DRIVE_FOLDER_MIME_TYPE}' and name contains '${name}' and trashed=false`.trim(),}))).files;
       } else {
-        folders = (await this.googleDrive.listFilesInPage(null, getListFilesOpts(this.parentId,{q: `mimeType = "${GOOGLE_DRIVE_FOLDER_MIME_TYPE}" and name contains "${name}" and trashed=false`.trim(),}))).files;
+        folders = (await this.googleDrive.listFilesInPage(null, getListFiles(this.parentId,{q: `mimeType = "${GOOGLE_DRIVE_FOLDER_MIME_TYPE}" and name contains "${name}" and trashed=false`.trim(),}))).files;
         console.log(`folders: ${folders}`);
       }
       for (let f of folders) {
@@ -94,3 +94,41 @@ export default {
     return resp;
   },
 };
+
+async function findFolder(opts = {}) {
+  const {
+    drive: driveProp,
+    name,
+    parentId,
+    excludeTrashed = true,
+  } = opts;
+  const drive = this.drive();
+  let q = `mimeType = '${GOOGLE_DRIVE_FOLDER_MIME_TYPE}'`;
+  if(name) {
+    q += ` and name = '${name}'`;
+  }
+  if(parentId) {
+    q += ` and '${parentId}' in parents`;
+  }
+  if(excludeTrashed) {
+    q += " and trashed != true";
+  }
+  const listOpts = getListFilesOpts(driveProp, {
+    q,
+  });
+  return (await drive.files.list(listOpts)).data.files;
+}
+
+async function getListFiles(drive, baseOpts = {}) {
+  // Use default options (e.g., `corpora=drive`) for `files.list` if `drive` is
+  // empty or is "My Drive". Otherwise, use the "drive" corpus and include
+  // `supportsAllDrives` param.
+  const opts = {
+        ...baseOpts,
+        corpora                  : "drive",
+        driveId                  : drive,
+        includeItemsFromAllDrives: true,
+        supportsAllDrives        : true,
+      };
+  return await opts;
+}
