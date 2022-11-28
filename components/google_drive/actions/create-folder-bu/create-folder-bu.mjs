@@ -9,7 +9,7 @@ export default {
   key: "google_drive-create-folder",
   name: "Create Folder BU",
   description: "Create a new empty folder. [See the docs](https://developers.google.com/drive/api/v3/reference/files/create) for more information",
-  version: "0.0.21",
+  version: "0.0.22",
   type: "action",
   props: {
     googleDrive,
@@ -50,6 +50,8 @@ export default {
       } else if(nameIncludesDoubleQuote){
         folders = (await this.googleDrive.listFilesInPage(null, getListFiles(this.parentId, {q: `mimeType = '${GOOGLE_DRIVE_FOLDER_MIME_TYPE}' and name contains '${name}' and trashed=false`.trim(),}))).files;
       } else {
+        let allFilesTest = getListFiles(this.parentId,{q: `mimeType = '${GOOGLE_DRIVE_FOLDER_MIME_TYPE}' and name contains '${name}' and trashed=false`.trim(),});
+        console.log(`allFilesTest: ${allFilesTest}`);
         folders = (await this.googleDrive.listFilesInPage(null, getListFiles(this.parentId,{q: `mimeType = "${GOOGLE_DRIVE_FOLDER_MIME_TYPE}" and name contains "${name}" and trashed=false`.trim(),}))).files;
       }
       for (let f of folders) {
@@ -75,6 +77,15 @@ export default {
     return resp;
   },
 };
+
+async function listFilesInPage(pageToken, extraOpts = {}) {
+  const drive = this.drive();
+  const {data} = await drive.files.list({
+    pageToken,
+    ...extraOpts,
+  });
+  return data;
+}
 
 async function getListFiles(drive, baseOpts = {}) {
   // Use default options (e.g., `corpora=drive`) for `files.list` if `drive` is
