@@ -9,10 +9,17 @@ export default {
 	key        : "google_drive-find-folder",
 	name       : "Find Folder BU",
 	description: "Find a folder. [See the docs](https://developers.google.com/drive/api/v3/reference/files/create) for more information",
-	version    : "0.0.3",
+	version    : "0.0.4",
 	type       : "action",
 	props      : {
 		googleDrive,
+		drive: {
+			propDefinition: [
+				googleDrive,
+				"watchedDrive",
+			],
+			optional      : true,
+		},
 		parentId      : {
 			label      : "Parent Folder ID",
 			description: "Select a folder in which to place the new folder. If not specified, the folder will be placed directly in the drive's top-level folder.",
@@ -29,18 +36,20 @@ export default {
 			parentId,
 			name,
 		} = this;
-		let childFolder = await this.findChildWithinParent(parentId, name);
+		let childFolder = await findChildWithinParent(parentId, name,this.drive,this.googleDrive);
 		console.log(`Found childFolder: ${childFolder}`);
 		return childFolder;
-	},
-	async findChildWithinParent(parentId, childName){
-		console.log(`Looking for ${childName} within ${parentId}`);
-		const query = `"${this.parentId}" in parents and trashed=false and mimeType = "application/vnd.google-apps.folder" and name = "${this.name}"`;
-		const getlist = getListFiles(this.drive, {q: query,});
-		safetyBug(getlist)
-		let folders = (await this.googleDrive.listFilesInPage(null, getlist)).files;
-		return 'It Works!';
 	}
+}
+
+async function findChildWithinParent(parentId, childName, drive, googleDrive)
+{
+	console.log(`Looking for ${childName} within ${parentId}`);
+	const query = `"${this.parentId}" in parents and trashed=false and mimeType = "application/vnd.google-apps.folder" and name = "${this.name}"`;
+	const getlist = getListFiles(drive, {q: query,});
+	safetyBug(getlist)
+	let folders = (await googleDrive.listFilesInPage(null, getlist)).files;
+	return 'It Works!';
 }
 
 async function getListFiles(drive, baseOpts = {}) {
