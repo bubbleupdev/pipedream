@@ -9,7 +9,7 @@ export default {
 	key        : "google_drive-find-folder",
 	name       : "Find Folder BU",
 	description: "Find a folder. [See the docs](https://developers.google.com/drive/api/v3/reference/files/create) for more information",
-	version    : "0.0.1",
+	version    : "0.0.2",
 	type       : "action",
 	props      : {
 		googleDrive,
@@ -29,12 +29,36 @@ export default {
 			parentId,
 			name,
 		} = this;
-		let childFolder = findChildWithinParent(parentId, name);
+		let childFolder = await this.findChildWithinParent(parentId, name);
 		console.log(`Found childFolder: ${childFolder}`);
 		return childFolder;
+	},
+	async findChildWithinParent(parentId, childName){
+		console.log(`Looking for ${childName} within ${parentId}`);
+		const query = `${this.parentId} in parents and trashed=false and mimeType = 'application/vnd.google-apps.folder' and name = ${this.name}`;
+		const getlist = getListFiles(this.drive, {q: query,});
+		safetyBug(getlist)
+		let folders = (await this.googleDrive.listFilesInPage(null, getlist)).files;
+		return 'It Works!';
 	}
 }
-function findChildWithinParent(parentId, childName){
-	console.log(`Looking for ${childName} within ${parentId}`);
-	return 'It Works!';
+
+async function getListFiles(drive, baseOpts = {}) {
+	// Use default options (e.g., `corpora=drive`) for `files.list` if `drive` is
+	// empty or is "My Drive". Otherwise, use the "drive" corpus and include
+	// `supportsAllDrives` param.
+	const opts = {
+		...baseOpts,
+		corpora                  : "drive",
+		driveId                  : drive,
+		includeItemsFromAllDrives: true,
+		supportsAllDrives        : true,
+	};
+	return await opts;
+}
+
+function safetyBug(getlist){
+	for(let f of Object.keys(getlist)) {
+		console.log(`getlist: ${f} - ${getlist[f]}`);
+	}
 }
