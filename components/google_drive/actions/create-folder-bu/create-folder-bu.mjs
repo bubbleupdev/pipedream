@@ -10,7 +10,7 @@ export default {
   key: "google_drive-create-folder",
   name: "Create Folder BU",
   description: "Create a new empty folder. [See the docs](https://developers.google.com/drive/api/v3/reference/files/create) for more information",
-  version: "0.0.14",
+  version: "0.0.15",
   type: "action",
   props: {
     googleDrive,
@@ -66,11 +66,11 @@ export default {
       var folders;
       if(nameIncludesDoubleQuote && nameIncludesSingleQuote){
         let adjustedName = name.replace(/"/g, "'");
-        folders = (await this.parentId.listFilesInPage(null, getListFilesOpts(this.drive,{q: `mimeType = "${GOOGLE_DRIVE_FOLDER_MIME_TYPE}" and name contains "${adjustedName}" and trashed=false`.trim(),}))).files;
+        folders = (await this.parentId.listFilesInPage(null, getListFilesOpts(this.parentId,{q: `mimeType = "${GOOGLE_DRIVE_FOLDER_MIME_TYPE}" and name contains "${adjustedName}" and trashed=false`.trim(),}))).files;
       } else if(nameIncludesDoubleQuote){
-        folders = (await this.parentId.listFilesInPage(null, getListFilesOpts(this.drive, {q: `mimeType = '${GOOGLE_DRIVE_FOLDER_MIME_TYPE}' and name contains '${name}' and trashed=false`.trim(),}))).files;
+        folders = (await this.parentId.listFilesInPage(null, getListFilesOpts(this.parentId, {q: `mimeType = '${GOOGLE_DRIVE_FOLDER_MIME_TYPE}' and name contains '${name}' and trashed=false`.trim(),}))).files;
       } else {
-        folders = (await this.parentId.listFilesInPage(null, getListFilesOpts(this.drive,{q: `mimeType = "${GOOGLE_DRIVE_FOLDER_MIME_TYPE}" and name contains "${name}" and trashed=false`.trim(),}))).files;
+        folders = (await this.parentId.listFilesInPage(null, getListFilesOpts(this.parentId,{q: `mimeType = "${GOOGLE_DRIVE_FOLDER_MIME_TYPE}" and name contains "${name}" and trashed=false`.trim(),}))).files;
       }
       for (let f of folders) {
         if (f.name == name) {
