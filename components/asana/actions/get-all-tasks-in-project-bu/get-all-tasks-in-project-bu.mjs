@@ -2,7 +2,7 @@ import asana from "../../asana.app.mjs";
 
 export default {
 	name       : "Get All Tasks In Project BU",
-	version    : "0.0.4",
+	version    : "0.0.5",
 	key        : "get-all-tasks-in-project-bu",
 	description: "",
 	props      : {
@@ -39,7 +39,7 @@ async function returnAllTasks($, step) {
 				resolve(allTasksArray.data);
 			}
 			trys++;
-		}, 3000);
+		}, 5000);
 	})
 }
 
