@@ -1,6 +1,5 @@
 import googleDrive from "../../google_drive.app.mjs";
 import {
-  getListFilesOpts,
   toSingleLineString,
 } from "../../utils.mjs";
 
@@ -10,17 +9,10 @@ export default {
   key: "google_drive-create-folder",
   name: "Create Folder BU",
   description: "Create a new empty folder. [See the docs](https://developers.google.com/drive/api/v3/reference/files/create) for more information",
-  version: "0.0.18",
+  version: "0.0.19",
   type: "action",
   props: {
     googleDrive,
-    drive: {
-      propDefinition: [
-        googleDrive,
-        "watchedDrive",
-      ],
-      optional: true,
-    },
     parentId: {
       propDefinition: [
         googleDrive,
@@ -71,11 +63,11 @@ export default {
         folders = (await this.googleDrive.listFilesInPage(null, getListFiles(this.parentId, {q: `mimeType = '${GOOGLE_DRIVE_FOLDER_MIME_TYPE}' and name contains '${name}' and trashed=false`.trim(),}))).files;
       } else {
         folders = (await this.googleDrive.listFilesInPage(null, getListFiles(this.parentId,{q: `mimeType = "${GOOGLE_DRIVE_FOLDER_MIME_TYPE}" and name contains "${name}" and trashed=false`.trim(),}))).files;
-        console.log(`folders: ${folders}`);
       }
       for (let f of folders) {
         if (f.name == name) {
           folder = f;
+          console.log(`Folder name found: ${f.name}`);
           break;
         }
       }
@@ -94,30 +86,6 @@ export default {
     return resp;
   },
 };
-
-async function findFolder(opts = {}) {
-  const {
-    drive: driveProp,
-    name,
-    parentId,
-    excludeTrashed = true,
-  } = opts;
-  const drive = this.drive();
-  let q = `mimeType = '${GOOGLE_DRIVE_FOLDER_MIME_TYPE}'`;
-  if(name) {
-    q += ` and name = '${name}'`;
-  }
-  if(parentId) {
-    q += ` and '${parentId}' in parents`;
-  }
-  if(excludeTrashed) {
-    q += " and trashed != true";
-  }
-  const listOpts = getListFilesOpts(driveProp, {
-    q,
-  });
-  return (await drive.files.list(listOpts)).data.files;
-}
 
 async function getListFiles(drive, baseOpts = {}) {
   // Use default options (e.g., `corpora=drive`) for `files.list` if `drive` is
