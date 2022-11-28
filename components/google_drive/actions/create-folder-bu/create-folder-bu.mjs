@@ -10,7 +10,7 @@ export default {
   key: "google_drive-create-folder",
   name: "Create Folder BU",
   description: "Create a new empty folder. [See the docs](https://developers.google.com/drive/api/v3/reference/files/create) for more information",
-  version: "0.0.13",
+  version: "0.0.14",
   type: "action",
   props: {
     googleDrive,
@@ -66,11 +66,11 @@ export default {
       var folders;
       if(nameIncludesDoubleQuote && nameIncludesSingleQuote){
         let adjustedName = name.replace(/"/g, "'");
-        folders = (await this.googleDrive.listFilesInPage(null, getListFilesOpts(this.drive,{q: `mimeType = "${GOOGLE_DRIVE_FOLDER_MIME_TYPE}" and name contains "${adjustedName}" and trashed=false`.trim(),}))).files;
+        folders = (await this.parentId.listFilesInPage(null, getListFilesOpts(this.drive,{q: `mimeType = "${GOOGLE_DRIVE_FOLDER_MIME_TYPE}" and name contains "${adjustedName}" and trashed=false`.trim(),}))).files;
       } else if(nameIncludesDoubleQuote){
-        folders = (await this.googleDrive.listFilesInPage(null, getListFilesOpts(this.drive, {q: `mimeType = '${GOOGLE_DRIVE_FOLDER_MIME_TYPE}' and name contains '${name}' and trashed=false`.trim(),}))).files;
+        folders = (await this.parentId.listFilesInPage(null, getListFilesOpts(this.drive, {q: `mimeType = '${GOOGLE_DRIVE_FOLDER_MIME_TYPE}' and name contains '${name}' and trashed=false`.trim(),}))).files;
       } else {
-        folders = (await this.googleDrive.listFilesInPage(null, getListFilesOpts(this.drive,{q: `mimeType = "${GOOGLE_DRIVE_FOLDER_MIME_TYPE}" and name contains "${name}" and trashed=false`.trim(),}))).files;
+        folders = (await this.parentId.listFilesInPage(null, getListFilesOpts(this.drive,{q: `mimeType = "${GOOGLE_DRIVE_FOLDER_MIME_TYPE}" and name contains "${name}" and trashed=false`.trim(),}))).files;
       }
       for (let f of folders) {
         if (f.name == name) {
@@ -80,13 +80,13 @@ export default {
       }
       if (folder) {
         $.export("$summary", "Found existing folder, therefore not creating folder. Returning found folder.");
-        const folderDetails = await this.googleDrive.getFile(folder.id);
+        const folderDetails = await this.parentId.getFile(folder.id);
 
         return folderDetails;
       }
     }
-    const driveId = this.googleDrive.getDriveId(this.drive);
-    const resp = await this.googleDrive.createFolder({
+    const driveId = this.parentId.getDriveId(this.drive);
+    const resp = await this.parentId.createFolder({
       name,
       parentId,
       driveId,
