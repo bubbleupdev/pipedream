@@ -9,7 +9,7 @@ export default {
 	key        : "google_drive-find-folder",
 	name       : "Find Folder BU",
 	description: "Find a folder. [See the docs](https://developers.google.com/drive/api/v3/reference/files/create) for more information",
-	version    : "0.0.2",
+	version    : "0.0.3",
 	type       : "action",
 	props      : {
 		googleDrive,
@@ -35,7 +35,7 @@ export default {
 	},
 	async findChildWithinParent(parentId, childName){
 		console.log(`Looking for ${childName} within ${parentId}`);
-		const query = `${this.parentId} in parents and trashed=false and mimeType = 'application/vnd.google-apps.folder' and name = ${this.name}`;
+		const query = `"${this.parentId}" in parents and trashed=false and mimeType = "application/vnd.google-apps.folder" and name = "${this.name}"`;
 		const getlist = getListFiles(this.drive, {q: query,});
 		safetyBug(getlist)
 		let folders = (await this.googleDrive.listFilesInPage(null, getlist)).files;
