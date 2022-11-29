@@ -1,18 +1,20 @@
 import googleDrive from "../../google_drive.app.mjs";
-import {
-  toSingleLineString,
-} from "../../utils.mjs";
-
 import { GOOGLE_DRIVE_FOLDER_MIME_TYPE } from "../../constants.mjs";
 
 export default {
   key: "google_drive-create-folder",
   name: "Create Folder BU",
   description: "Create a new empty folder. [See the docs](https://developers.google.com/drive/api/v3/reference/files/create) for more information",
-  version: "0.0.26",
+  version: "0.0.27",
   type: "action",
   props: {
     googleDrive,
+    drive: {
+      propDefinition: [
+        googleDrive,
+        "watchedDrive",
+      ]
+    },
     parentId: {
       label      : "Parent Folder ID",
       description: "Select a folder in which to place the new folder. If not specified, the folder will be placed directly in the drive's top-level folder.",
@@ -26,10 +28,7 @@ export default {
     createIfExists: {
       type: "boolean",
       label: "Create If Exists?",
-      description: toSingleLineString(`
-        If the folder already exists and is not in the trash, should we create it? This option defaults to 'true' for
-        backwards compatibility and to be consistent with default Google Drive behavior. 
-      `),
+      description: "If the folder already exists and is not in the trash, should we create it? This option defaults to 'true' for\n        backwards compatibility and to be consistent with default Google Drive behavior.",
       default: true,
     },
   },
@@ -41,17 +40,7 @@ export default {
     } = this;
     let folder;
     if (createIfExists == false) {//checking "false" because if this optional prop may not be given
-      let nameIncludesDoubleQuote = name.includes('"');
-      let nameIncludesSingleQuote = name.includes("'");
-      var folders;
-      if(nameIncludesDoubleQuote && nameIncludesSingleQuote){
-        let adjustedName = name.replace(/"/g, "'");
-        folders = (await this.googleDrive.listFilesInPage(null, getListFiles(this.parentId,{q: `mimeType = "${GOOGLE_DRIVE_FOLDER_MIME_TYPE}" and name contains "${adjustedName}" and trashed=false`.trim(),}))).files;
-      } else if(nameIncludesDoubleQuote){
-        folders = (await this.googleDrive.listFilesInPage(null, getListFiles(this.parentId, {q: `mimeType = '${GOOGLE_DRIVE_FOLDER_MIME_TYPE}' and name contains '${name}' and trashed=false`.trim(),}))).files;
-      } else {
-        folders = (await this.googleDrive.listFilesInPage(null, getListFiles(this.parentId,{q: `mimeType = "${GOOGLE_DRIVE_FOLDER_MIME_TYPE}" and name contains "${name}" and trashed=false`.trim(),}))).files;
-      }
+      let folders = await findChildWithinParent(parentId, name, this.drive, this.googleDrive);
       for (let f of folders) {
         //console.log(`Folder name checked: ${f.name}`);
         if (f.name == name) {
@@ -76,13 +65,26 @@ export default {
   },
 };
 
-async function listFilesInPage(pageToken, extraOpts = {}) {
-  const drive = this.drive();
-  const {data} = await drive.files.list({
-    pageToken,
-    ...extraOpts,
-  });
-  return data;
+async function findChildWithinParent(parentId, childName, drive, googleDrive) {
+  console.log(`Looking for ${childName} within ${parentId}`);
+  let query = await makeQuery(parentId,childName);
+  const getlist = await getListFiles(drive, {q: query,});
+  safetyBug(getlist)
+  return (await googleDrive.listFilesInPage(null, getlist)).files;
+}
+
+async function makeQuery(parentId, childName){
+  let nameIncludesDoubleQuote = name.includes('"');
+  let nameIncludesSingleQuote = name.includes("'");
+
+  if(nameIncludesDoubleQuote && nameIncludesSingleQuote) {
+    let adjustedName = name.replace(/"/g, "'");
+    return `"${parentId}" in parents and trashed=false and mimeType = "application/vnd.google-apps.folder" and name = "${adjustedName}"`;
+  } else if(nameIncludesDoubleQuote) {
+    return `'${parentId}' in parents and trashed=false and mimeType = 'application/vnd.google-apps.folder' and name = '${childName}'`;
+  } else {
+    return `"${parentId}" in parents and trashed=false and mimeType = "application/vnd.google-apps.folder" and name = "${childName}"`;
+  }
 }
 
 async function getListFiles(drive, baseOpts = {}) {
@@ -97,4 +99,10 @@ async function getListFiles(drive, baseOpts = {}) {
         supportsAllDrives        : true,
       };
   return await opts;
+}
+
+function safetyBug(getlist) {
+  for(let f of Object.keys(getlist)) {
+    console.log(`getlist items - "${f}": ${getlist[f]}`);
+  }
 }
