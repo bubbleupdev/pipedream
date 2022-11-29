@@ -5,7 +5,7 @@ export default {
   key: "google_drive-create-folder",
   name: "Create Folder BU",
   description: "Create a new empty folder. [See the docs](https://developers.google.com/drive/api/v3/reference/files/create) for more information",
-  version: "0.0.27",
+  version: "0.0.28",
   type: "action",
   props: {
     googleDrive,
@@ -74,12 +74,12 @@ async function findChildWithinParent(parentId, childName, drive, googleDrive) {
 }
 
 async function makeQuery(parentId, childName){
-  let nameIncludesDoubleQuote = name.includes('"');
-  let nameIncludesSingleQuote = name.includes("'");
+  let nameIncludesDoubleQuote = childName.includes('"');
+  let nameIncludesSingleQuote = childName.includes("'");
 
   if(nameIncludesDoubleQuote && nameIncludesSingleQuote) {
-    let adjustedName = name.replace(/"/g, "'");
-    return `"${parentId}" in parents and trashed=false and mimeType = "application/vnd.google-apps.folder" and name = "${adjustedName}"`;
+    let adjustedChildName = childName.replace(/"/g, "'");
+    return `"${parentId}" in parents and trashed=false and mimeType = "application/vnd.google-apps.folder" and name = "${adjustedChildName}"`;
   } else if(nameIncludesDoubleQuote) {
     return `'${parentId}' in parents and trashed=false and mimeType = 'application/vnd.google-apps.folder' and name = '${childName}'`;
   } else {
