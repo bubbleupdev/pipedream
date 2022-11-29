@@ -1,6 +1,7 @@
 import googleSheets from "../../google_sheets.app.mjs";
 
 const spreadsheetProps = [
+  "Event Name",
   "Talent Buyer",
   "Tour Director",
   "Tour Marketer",
@@ -15,7 +16,7 @@ export default {
   key        : "update-cell-bu",
   name       : "Update Cell BU",
   description: "Update a cell in a spreadsheet",
-  version    : "0.0.3",
+  version    : "0.0.4",
   type       : "action",
   props      : {
     googleSheets,
@@ -42,57 +43,63 @@ export default {
       type    : "string",
       label   : "Sheet values from prior step",
     },
-    talentBuyer      : {
+    eventName: {
       type    : "string",
       label   : spreadsheetProps[0],
       optional: true,
     },
-    tourDirector     : {
+    talentBuyer      : {
       type    : "string",
       label   : spreadsheetProps[1],
       optional: true,
     },
-    tourMarketer     : {
+    tourDirector     : {
       type    : "string",
       label   : spreadsheetProps[2],
       optional: true,
     },
-    ticketingDirector: {
+    tourMarketer     : {
       type    : "string",
       label   : spreadsheetProps[3],
       optional: true,
     },
-    targetAnnounce: {
+    ticketingDirector: {
       type    : "string",
       label   : spreadsheetProps[4],
       optional: true,
     },
-    targetPublicOnsale: {
+    targetAnnounce: {
       type    : "string",
       label   : spreadsheetProps[5],
       optional: true,
     },
-    startDateofTour: {
+    targetPublicOnsale: {
       type    : "string",
       label   : spreadsheetProps[6],
       optional: true,
     },
-    romeTourMarketingID: {
+    startDateofTour: {
       type    : "string",
       label   : spreadsheetProps[7],
+      optional: true,
+    },
+    romeTourMarketingID: {
+      type    : "string",
+      label   : spreadsheetProps[8],
       optional: true,
     },
   },
   async run({$}) {
     var spreadsheetPropValues = [
-        this.talentBuyer,
-        this.tourDirector,
-        this.tourMarketer,
-        this.ticketingDirector,
-        this.targetAnnounce,
-        this.targetPublicOnsale,
-        this.startDateofTour,
-        this.romeTourMarketingID,
+      this.eventName,
+      this.talentBuyer,
+      this.tourDirector,
+      this.tourMarketer,
+      this.ticketingDirector,
+      this.targetAnnounce,
+      this.targetPublicOnsale,
+      this.startDateofTour,
+      this.romeTourMarketingID
     ]
     let sheetValues = this.sheetValues;
     var values = [];
@@ -116,8 +123,16 @@ export default {
         for(let j = 0; j < sheetValues[i]?.length; j++) {
           if(sheetValues[i][j] === propItem) {
             let row = i + 1;
-            let oneColumnToTheRight = columnConversion[j + 1];
-            let cellForNewValue = oneColumnToTheRight + row;
+            let columnForNewValue;
+            // DEPENDANT IF
+            if(propItem === spreadsheetProps[0]){
+              // Replacing same cell
+              columnForNewValue = columnConversion[j];
+            }else{
+              // Moving one column to the right
+              columnForNewValue = columnConversion[j + 1];
+            }
+            let cellForNewValue = columnForNewValue + row;
             values.push([
               propItem,
               cellForNewValue
