@@ -9,7 +9,7 @@ export default {
 	key        : "google_drive-find-folder",
 	name       : "Find Folder BU",
 	description: "Find a folder. [See the docs](https://developers.google.com/drive/api/v3/reference/files/create) for more information",
-	version    : "0.0.8",
+	version    : "0.0.9",
 	type       : "action",
 	props      : {
 		googleDrive,
@@ -36,9 +36,7 @@ export default {
 			parentId,
 			name,
 		} = this;
-		let childFolder = await findChildWithinParent(parentId, name,this.drive,this.googleDrive);
-		console.log(`Found childFolder: ${childFolder}`);
-		return childFolder;
+		return await findChildWithinParent(parentId, name, this.drive, this.googleDrive);
 	}
 }
 
@@ -47,10 +45,8 @@ async function findChildWithinParent(parentId, childName, drive, googleDrive)
 	console.log(`Looking for ${childName} within ${parentId}`);
 	const query = `"${parentId}" in parents and trashed=false and mimeType = "application/vnd.google-apps.folder" and name = "${childName}"`;
 	const getlist = await getListFiles(drive, {q: query,});
-	console.log(`getlist: ${getlist}`)
 	safetyBug(getlist)
-	let folders = (await googleDrive.listFilesInPage(null, getlist)).files;
-	return folders;
+	return (await googleDrive.listFilesInPage(null, getlist)).files;
 }
 
 async function getListFiles(drive, baseOpts = {}) {
@@ -69,6 +65,6 @@ async function getListFiles(drive, baseOpts = {}) {
 
 function safetyBug(getlist){
 	for(let f of Object.keys(getlist)) {
-		console.log(`getlist: ${f} - ${getlist[f]}`);
+		console.log(`getlist items - "${f}": ${getlist[f]}`);
 	}
 }
