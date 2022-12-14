@@ -16,7 +16,7 @@ export default {
   key        : "update-cell-bu",
   name       : "Update Cell BU",
   description: "Update a cell in a spreadsheet",
-  version    : "0.0.4",
+  version    : "0.0.5",
   type       : "action",
   props      : {
     googleSheets,
@@ -127,7 +127,7 @@ export default {
             // DEPENDANT IF
             if(propItem === spreadsheetProps[0]){
               // Replacing same cell
-              columnForNewValue = columnConversion[j];
+              columnForNewValue = columnConversion[0];
             }else{
               // Moving one column to the right
               columnForNewValue = columnConversion[j + 1];
