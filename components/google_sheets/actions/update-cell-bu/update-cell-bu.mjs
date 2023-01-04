@@ -2,13 +2,7 @@ import googleSheets from "../../google_sheets.app.mjs";
 
 const spreadsheetProps = [
   "Event Name",
-  "Talent Buyer",
-  "Tour Director",
   "Tour Marketer",
-  "Ticketing Director",
-  "Target Announce",
-  "Target Public Onsale",
-  "Start Date of Tour",
   "Rome Tour Marketing ID (TOU-000000)"
 ];
 
@@ -16,7 +10,7 @@ export default {
   key        : "update-cell-bu",
   name       : "Update Cell BU",
   description: "Update a cell in a spreadsheet",
-  version    : "0.0.5",
+  version    : "0.0.6",
   type       : "action",
   props      : {
     googleSheets,
@@ -48,57 +42,21 @@ export default {
       label   : spreadsheetProps[0],
       optional: true,
     },
-    talentBuyer      : {
+    tourMarketer     : {
       type    : "string",
       label   : spreadsheetProps[1],
       optional: true,
     },
-    tourDirector     : {
-      type    : "string",
-      label   : spreadsheetProps[2],
-      optional: true,
-    },
-    tourMarketer     : {
-      type    : "string",
-      label   : spreadsheetProps[3],
-      optional: true,
-    },
-    ticketingDirector: {
-      type    : "string",
-      label   : spreadsheetProps[4],
-      optional: true,
-    },
-    targetAnnounce: {
-      type    : "string",
-      label   : spreadsheetProps[5],
-      optional: true,
-    },
-    targetPublicOnsale: {
-      type    : "string",
-      label   : spreadsheetProps[6],
-      optional: true,
-    },
-    startDateofTour: {
-      type    : "string",
-      label   : spreadsheetProps[7],
-      optional: true,
-    },
     romeTourMarketingID: {
       type    : "string",
-      label   : spreadsheetProps[8],
+      label   : spreadsheetProps[2],
       optional: true,
     },
   },
   async run({$}) {
     var spreadsheetPropValues = [
       this.eventName,
-      this.talentBuyer,
-      this.tourDirector,
       this.tourMarketer,
-      this.ticketingDirector,
-      this.targetAnnounce,
-      this.targetPublicOnsale,
-      this.startDateofTour,
       this.romeTourMarketingID
     ]
     let sheetValues = this.sheetValues;
@@ -121,7 +79,7 @@ export default {
     function multidimentionalForSearchLoop(propItem) {
       for(let i = 0; i < sheetValues?.length; i++) {
         for(let j = 0; j < sheetValues[i]?.length; j++) {
-          if(sheetValues[i][j] === propItem) {
+          if(sheetValues[i][j].trim() === propItem) {
             let row = i + 1;
             let columnForNewValue;
             // DEPENDANT IF
