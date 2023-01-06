@@ -10,7 +10,7 @@ export default {
   key        : "update-cell-bu",
   name       : "Update Cell BU",
   description: "Update a cell in a spreadsheet",
-  version    : "0.0.7",
+  version    : "0.0.8",
   type       : "action",
   props      : {
     googleSheets,
@@ -84,18 +84,18 @@ export default {
             let columnForNewValue;
             // DEPENDANT IF
             if(propItem === spreadsheetProps[0]){
-              console.log("sheetValues[i][j] : " + sheetValues[i][j]);
+              console.log("sheetValues[i][j] : '" + sheetValues[i][j] + "'");
               // Replacing same cell
               columnForNewValue = columnConversion[0];
             }else{
-              console.log("sheetValues[i][j] : " + sheetValues[i][j]);
-              console.log("columnConversion[j + 1] : " + columnConversion[j + 1]);
+              console.log("sheetValues[i][j] : '" + sheetValues[i][j] + "'");
+              console.log("columnConversion[j + 1] : '" + columnConversion[j + 1] + "'");
               // Moving one column to the right
               columnForNewValue = columnConversion[j + 1];
             }
             let cellForNewValue = columnForNewValue + row;
-            console.log("propItem : " + propItem);
-            console.log("cellForNewValue : " + cellForNewValue);
+            console.log("propItem : '" + propItem + "'");
+            console.log("cellForNewValue : '" + cellForNewValue + "'");
             values.push([
               propItem,
               cellForNewValue
