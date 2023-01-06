@@ -3,7 +3,7 @@ import axios from "axios";
 
 export default {
   name: "Copy Folder BU",
-  version: "0.0.1",
+  version: "0.0.2",
   key: "copy-folder-bu",
   description: "Copy a folder. [See the docs here](https://developer.box.com/reference/post-folders-id-copy/)",
   type: "action",
@@ -33,7 +33,7 @@ export default {
     var apiResult = await makeApiCall($, this);
     var folderExists = apiResult.data.code === "item_name_in_use";
     if(folderExists){
-      return apiResult.data.context_info.conflicts;
+      return apiResult.data.context_info.conflicts[0];
     }else{
       return apiResult.data;
     }
