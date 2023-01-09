@@ -1,6 +1,6 @@
 module.exports = defineComponent({
 	name   : "Asana Update Subtask Names To GCF",
-	version: "0.0.3",
+	version: "0.0.4",
 	key    : "asana-update-subtask-names-to-gcf-bu",
 	props: {
 		google_cloud: {
@@ -35,8 +35,9 @@ module.exports = defineComponent({
 		    key: key.private_key,
 		  });
 		  const token = await client.fetchIdToken(url);
+		  console.log(`token: ${token}`)
 		  const headers = new Map([
-		    ['Authorization', `Bearer `],
+		    ['Authorization', `Bearer ${token}`],
 		    ['Content-Type', `application/json`]
 		  ]);
 		  let payload = {"tour_name_year": step.tour_name_year};
