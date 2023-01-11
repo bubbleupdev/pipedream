@@ -1,6 +1,6 @@
 module.exports = defineComponent({
 	name   : "Asana Update Subtask Names To GCF",
-	version: "0.0.4",
+	version: "0.0.5",
 	key    : "asana-update-subtask-names-to-gcf-bu",
 	props: {
 		google_cloud: {
@@ -43,7 +43,7 @@ module.exports = defineComponent({
 		  let payload = {"tour_name_year": step.tour_name_year};
 		  payload.all_project_tasks_data = step.all_project_tasks_data;
 		  console.log(payload);
-		  await client.request({url,headers,method: 'POST',data: payload});
+		  client.request({url,headers,method: 'POST',data: payload});
 		  return `Triggered ${step.gcf_trigger}`
 		}
 		return await main(this);
