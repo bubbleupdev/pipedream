@@ -1,6 +1,6 @@
 module.exports = defineComponent({
 	name   : "Asana Update Task Names To GCF",
-	version: "0.0.4",
+	version: "0.0.5",
 	key    : "asana-update-task-names-to-gcf-bu",
 	props  : {
 		google_cloud          : {
@@ -93,7 +93,7 @@ module.exports = defineComponent({
 })
 
 function concatName(projectName, coHeadliner) {
-	if(coHeadliner !== "") {
+	if(coHeadliner) {
 		return projectName + ' / ' + coHeadliner;
 	}
 	return projectName;
