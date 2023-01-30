@@ -1,6 +1,6 @@
 module.exports = defineComponent({
 	name   : "Asana Update Task Names To GCF",
-	version: "0.0.7",
+	version: "0.0.8",
 	key    : "asana-update-task-names-to-gcf-bu",
 	props: {
 		google_cloud: {
@@ -9,10 +9,6 @@ module.exports = defineComponent({
 		},
 		gcf_trigger : {
 			label: "GCF http trigger url",
-			type : "string",
-		},
-		tour_name_year: {
-			label: "Tour Name and Year",
 			type : "string",
 		},
 		name                  : {
