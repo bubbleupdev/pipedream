@@ -1,6 +1,6 @@
 module.exports = defineComponent({
 	name   : "Asana Update Subtask Names To GCF",
-	version: "0.0.5",
+	version: "0.0.6",
 	key    : "asana-update-subtask-names-to-gcf-bu",
 	props: {
 		google_cloud: {
@@ -11,9 +11,35 @@ module.exports = defineComponent({
 			label: "GCF http trigger url",
 			type : "string",
 		},
-		tour_name_year: {
-			label: "Tour Name and Year",
-			type : "string",
+		name          : {
+			label      : "Artist Name",
+			description: "Headliner",
+			type       : "string",
+		},
+		co_headliner_1: {
+			label      : "Co-Headliner 1",
+			description: "1st Co-Headliner",
+			type       : "string",
+		},
+		co_headliner_2: {
+			label      : "Co-Headliner 2",
+			description: "2nd Co-Headliner",
+			type       : "string",
+		},
+		co_headliner_3: {
+			label      : "Co-Headliner 3",
+			description: "3rd Co-Headliner",
+			type       : "string",
+		},
+		co_headliner_4: {
+			label      : "Co-Headliner 4",
+			description: "4th Co-Headliner",
+			type       : "string",
+		},
+		year          : {
+			label      : "Year",
+			description: "Year of the project.",
+			type       : "string",
 		},
 		all_project_tasks_data: {
 			label      : "All Project Tasks Data",
@@ -24,6 +50,18 @@ module.exports = defineComponent({
 	type   : "action",
 	methods: {},
 	async run({steps, $}) {
+		let projectName = this.name;
+		let coHeadliners = [
+			this.co_headliner_1,
+			this.co_headliner_2,
+			this.co_headliner_3,
+			this.co_headliner_4,
+		]
+		for(let i = 0; i < coHeadliners.length; i++) {
+			projectName = concatName(projectName, coHeadliners[i]);
+		}
+		projectName = projectName + ' ' + this.year;
+
 		const key = JSON.parse(this.google_cloud.$auth.key_json)
 		const {JWT} = require('google-auth-library');
 
@@ -40,7 +78,7 @@ module.exports = defineComponent({
 		    ['Authorization', `Bearer ${token}`],
 		    ['Content-Type', `application/json`]
 		  ]);
-		  let payload = {"tour_name_year": step.tour_name_year};
+		  let payload = {"tour_name_year": projectName};
 		  payload.all_project_tasks_data = step.all_project_tasks_data;
 		  console.log(payload);
 		  client.request({url,headers,method: 'POST',data: payload});
@@ -49,3 +87,10 @@ module.exports = defineComponent({
 		return await main(this);
 	},
 })
+
+function concatName(projectName, coHeadliner) {
+	if(coHeadliner) {
+		return projectName + ' / ' + coHeadliner;
+	}
+	return projectName;
+}
