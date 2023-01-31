@@ -5,7 +5,7 @@ export default {
   key: "google_drive-create-folder",
   name: "Create Folder BU",
   description: "Create a new empty folder. [See the docs](https://developers.google.com/drive/api/v3/reference/files/create) for more information",
-  version: "0.0.29",
+  version: "0.0.30",
   type: "action",
   props: {
     googleDrive,
@@ -20,9 +20,29 @@ export default {
       description: "Select a folder in which to place the new folder. If not specified, the folder will be placed directly in the drive's top-level folder.",
       type       : "string",
     },
-    name: {
-      label: "Name",
-      description: "The name of the new folder",
+    name          : {
+      label      : "Artist Name",
+      description: "Headliner",
+      type       : "string",
+    },
+    co_headliner_1: {
+      label      : "Co-Headliner 1",
+      description: "1st Co-Headliner",
+      type       : "string",
+    },
+    co_headliner_2: {
+      label      : "Co-Headliner 2",
+      description: "2nd Co-Headliner",
+      type       : "string",
+    },
+    co_headliner_3: {
+      label      : "Co-Headliner 3",
+      description: "3rd Co-Headliner",
+      type       : "string",
+    },
+    co_headliner_4: {
+      label      : "Co-Headliner 4",
+      description: "4th Co-Headliner",
       type       : "string",
     },
     createIfExists: {
@@ -38,12 +58,24 @@ export default {
       name,
       createIfExists,
     } = this;
+
+    let projectName = name;
+    let coHeadliners = [
+      this.co_headliner_1,
+      this.co_headliner_2,
+      this.co_headliner_3,
+      this.co_headliner_4,
+    ]
+    for(let i = 0; i < coHeadliners.length; i++) {
+      projectName = concatName(projectName, coHeadliners[i]);
+    }
+
     let folder;
     if (createIfExists == false) {//checking "false" because if this optional prop may not be given
-      let folders = await findChildWithinParent(parentId, name, this.drive, this.googleDrive);
+      let folders = await findChildWithinParent(parentId, projectName, this.drive, this.googleDrive);
       for (let f of folders) {
         //console.log(`Folder name checked: ${f.name}`);
-        if (f.name == name) {
+        if (f.name == projectName) {
           folder = f;
           //console.log(`Folder name found: ${f.name}`);
           break;
@@ -62,6 +94,13 @@ export default {
     return resp;
   },
 };
+
+function concatName(projectName, coHeadliner) {
+  if(coHeadliner) {
+    return projectName + ' / ' + coHeadliner;
+  }
+  return projectName;
+}
 
 async function findChildWithinParent(parentId, childName, drive, googleDrive) {
   console.log(`Looking for ${childName} within ${parentId}`);
