@@ -1,5 +1,6 @@
 import googleSheets from "../../google_sheets.app.mjs";
 
+// Exact values from the Marketing Brief template cells
 const spreadsheetProps = [
 	"Event Name ",
 	"Tour Marketer",
@@ -10,7 +11,7 @@ export default {
 	key        : "update-cell-bu",
 	name       : "Update Cell BU",
 	description: "Update a cell in a spreadsheet",
-	version    : "0.0.17",
+	version    : "0.0.18",
 	type       : "action",
 	props      : {
 		googleSheets,
@@ -78,6 +79,7 @@ export default {
 		},
 	},
 	async run({$}) {
+		// concatenate if there are co-headliners
 		let projectName = this.name;
 		let coHeadliners = [
 			this.co_headliner_1,
@@ -90,6 +92,7 @@ export default {
 		}
 		projectName = projectName + ' ' + this.year;
 
+		// Values to go into the Marketing Brief
 		var spreadsheetPropValues = [
 			projectName,
 			this.tourMarketer,
@@ -100,12 +103,14 @@ export default {
 		var sheetValueReplacements = [];
 		for(let i = 0; i < spreadsheetProps?.length; i++) {
 			if(spreadsheetPropValues[i] && typeof spreadsheetPropValues[i] !== 'undefined' && exists(sheetValues, spreadsheetProps[i])) {
+				// Collect cell value replacements and the cell to which they will replace
 				sheetValueReplacements.push(multidimentionalForSearchLoop(spreadsheetProps[i], sheetValues, spreadsheetProps[0]));
 			}
 		}
 
 		var updatingValueAndCells = [];
 		$.export("$summary", sheetValueReplacements);
+		// API request per cell to update
 		for(let i = 0; i < sheetValueReplacements?.length; i++) {
 			updatingValueAndCells.push({value: spreadsheetPropValues[i], cell: sheetValueReplacements[i][1]});
 			const request = {
@@ -144,14 +149,14 @@ function multidimentionalForSearchLoop(propItem, sheetValues, existingSheetEvent
 			if(sheetValues[i][j] === propItem) {
 				let row = i + 1;
 				let columnForNewValue;
-				// DEPENDANT IF
+				// The spreadsheet cell with "Event Name " should replace the cell instead of entering one to the right
 				if(propItem === existingSheetEventNameCellText) {
 					console.log("multidimentionalForSearchLoop > sheetValues[i][j] : '" + sheetValues[i][j] + "'");
 					// Replacing same cell
 					columnForNewValue = columnConversion[0];
 				} else {
 					console.log("multidimentionalForSearchLoop > sheetValues[i][j] : '" + sheetValues[i][j] + "'");
-					// Moving one column to the right
+					// Replacing cell one column to the right
 					columnForNewValue = columnConversion[j + 1];
 				}
 				let cellForNewValue = columnForNewValue + row;
