@@ -10,7 +10,7 @@ export default {
   key        : "update-cell-bu",
   name       : "Update Cell BU",
   description: "Update a cell in a spreadsheet",
-  version    : "0.0.10",
+  version    : "0.0.11",
   type       : "action",
   props      : {
     googleSheets,
@@ -101,7 +101,7 @@ export default {
 	var sheetValueReplacements = [];
     for(let i = 0; i < spreadsheetProps?.length; i++) {
       if(exists(sheetValues, spreadsheetProps[i])) {
-	      sheetValueReplacements.push(multidimentionalForSearchLoop(spreadsheetProps[i]));
+	      sheetValueReplacements.push(multidimentionalForSearchLoop(spreadsheetProps[i], sheetValues, spreadsheetProps[0]));
       }
     }
 
@@ -138,7 +138,7 @@ function exists(arr, search) {
 	return arr.some(row => row.includes(search));
 }
 
-function multidimentionalForSearchLoop(propItem, sheetValues, spreadsheetProps) {
+function multidimentionalForSearchLoop(propItem, sheetValues, existingSheetEventNameCellText) {
 	let columnConversion = ["A", "B", "C", "D", "E", "F", "G", "H"];
 	let values = [];
 	for(let i = 0; i < sheetValues?.length; i++) {
@@ -147,7 +147,7 @@ function multidimentionalForSearchLoop(propItem, sheetValues, spreadsheetProps) 
 				let row = i + 1;
 				let columnForNewValue;
 				// DEPENDANT IF
-				if(propItem === spreadsheetProps[0]) {
+				if(propItem === existingSheetEventNameCellText) {
 					console.log("sheetValues[i][j] : '" + sheetValues[i][j] + "'");
 					// Replacing same cell
 					columnForNewValue = columnConversion[0];
