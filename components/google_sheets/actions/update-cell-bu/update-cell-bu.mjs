@@ -10,7 +10,7 @@ export default {
   key        : "update-cell-bu",
   name       : "Update Cell BU",
   description: "Update a cell in a spreadsheet",
-  version    : "0.0.14",
+  version    : "0.0.15",
   type       : "action",
   props      : {
     googleSheets,
@@ -121,7 +121,7 @@ export default {
           ],
         },
       };
-      //await this.googleSheets.updateSpreadsheet(request);
+      await this.googleSheets.updateSpreadsheet(request);
     }
     return "Updated: " + JSON.stringify(updatingValueAndCells);
   },
@@ -147,18 +147,17 @@ function multidimentionalForSearchLoop(propItem, sheetValues, existingSheetEvent
 				let columnForNewValue;
 				// DEPENDANT IF
 				if(propItem === existingSheetEventNameCellText) {
-					console.log("sheetValues[i][j] : '" + sheetValues[i][j] + "'");
+					console.log("multidimentionalForSearchLoop > sheetValues[i][j] : '" + sheetValues[i][j] + "'");
 					// Replacing same cell
 					columnForNewValue = columnConversion[0];
 				} else {
-					console.log("sheetValues[i][j] : '" + sheetValues[i][j] + "'");
-					console.log("columnConversion[j + 1] : '" + columnConversion[j + 1] + "'");
+					console.log("multidimentionalForSearchLoop > sheetValues[i][j] : '" + sheetValues[i][j] + "'");
 					// Moving one column to the right
 					columnForNewValue = columnConversion[j + 1];
 				}
 				let cellForNewValue = columnForNewValue + row;
-				console.log("propItem : '" + propItem + "'");
-				console.log("cellForNewValue : '" + cellForNewValue + "'");
+				console.log("multidimentionalForSearchLoop > propItem : '" + propItem + "'");
+				console.log("multidimentionalForSearchLoop > cellForNewValue : '" + cellForNewValue + "'");
 
 				return [propItem,cellForNewValue];
 			}
