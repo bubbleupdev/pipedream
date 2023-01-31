@@ -10,7 +10,7 @@ export default {
   key        : "update-cell-bu",
   name       : "Update Cell BU",
   description: "Update a cell in a spreadsheet",
-  version    : "0.0.11",
+  version    : "0.0.12",
   type       : "action",
   props      : {
     googleSheets,
@@ -140,7 +140,6 @@ function exists(arr, search) {
 
 function multidimentionalForSearchLoop(propItem, sheetValues, existingSheetEventNameCellText) {
 	let columnConversion = ["A", "B", "C", "D", "E", "F", "G", "H"];
-	let values = [];
 	for(let i = 0; i < sheetValues?.length; i++) {
 		for(let j = 0; j < sheetValues[i]?.length; j++) {
 			if(sheetValues[i][j] === propItem) {
@@ -160,12 +159,9 @@ function multidimentionalForSearchLoop(propItem, sheetValues, existingSheetEvent
 				let cellForNewValue = columnForNewValue + row;
 				console.log("propItem : '" + propItem + "'");
 				console.log("cellForNewValue : '" + cellForNewValue + "'");
-				values.push([
-					propItem,
-					cellForNewValue
-				]);
+
+				return [propItem,cellForNewValue];
 			}
 		}
 	}
-	return values;
 }
