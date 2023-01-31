@@ -1,130 +1,129 @@
 import googleSheets from "../../google_sheets.app.mjs";
 
 const spreadsheetProps = [
-  "Event Name ",
-  "Tour Marketer",
-  "Rome Tour Marketing ID (TOU-000000)"
+	"Event Name ",
+	"Tour Marketer",
+	"Rome Tour Marketing ID (TOU-000000)"
 ];
 
 export default {
-  key        : "update-cell-bu",
-  name       : "Update Cell BU",
-  description: "Update a cell in a spreadsheet",
-  version    : "0.0.15",
-  type       : "action",
-  props      : {
-    googleSheets,
-    sheetId  : {
-      propDefinition: [
-        googleSheets,
-        "sheetID",
-        (c) => ({
-          driveId: googleSheets.methods.getDriveId(c.drive),
-        }),
-      ],
-      description   : "The spreadsheet containing the worksheet to update",
-    },
-    sheetName: {
-      propDefinition: [
-        googleSheets,
-        "sheetName",
-        (c) => ({
-          sheetId: c.sheetId,
-        }),
-      ],
-    },
-    sheetValues: {
-      type    : "string",
-      label   : "Sheet values from prior step",
-    },
-	  name          : {
-		  label      : "Artist Name",
-		  description: "Headliner",
-		  type       : "string",
-	  },
-	  co_headliner_1: {
-		  label      : "Co-Headliner 1",
-		  description: "1st Co-Headliner",
-		  type       : "string",
-	  },
-	  co_headliner_2: {
-		  label      : "Co-Headliner 2",
-		  description: "2nd Co-Headliner",
-		  type       : "string",
-	  },
-	  co_headliner_3: {
-		  label      : "Co-Headliner 3",
-		  description: "3rd Co-Headliner",
-		  type       : "string",
-	  },
-	  co_headliner_4: {
-		  label      : "Co-Headliner 4",
-		  description: "4th Co-Headliner",
-		  type       : "string",
-	  },
-	  year          : {
-		  label      : "Year",
-		  description: "Year of the project.",
-		  type       : "string",
-	  },
-    tourMarketer     : {
-      type    : "string",
-      label   : spreadsheetProps[1],
-      optional: true,
-    },
-    romeTourMarketingID: {
-      type    : "string",
-      label   : spreadsheetProps[2],
-      optional: true,
-    },
-  },
-  async run({$}) {
-	  let projectName = this.name;
-	  let coHeadliners = [
-		  this.co_headliner_1,
-		  this.co_headliner_2,
-		  this.co_headliner_3,
-		  this.co_headliner_4,
-	  ]
-	  for(let i = 0; i < coHeadliners.length; i++) {
-		  projectName = concatName(projectName, coHeadliners[i]);
-	  }
-	  projectName = projectName + ' ' + this.year;
+	key        : "update-cell-bu",
+	name       : "Update Cell BU",
+	description: "Update a cell in a spreadsheet",
+	version    : "0.0.15",
+	type       : "action",
+	props      : {
+		googleSheets,
+		sheetId            : {
+			propDefinition: [
+				googleSheets,
+				"sheetID",
+				(c) => ({
+					driveId: googleSheets.methods.getDriveId(c.drive),
+				}),
+			],
+			description   : "The spreadsheet containing the worksheet to update",
+		},
+		sheetName          : {
+			propDefinition: [
+				googleSheets,
+				"sheetName",
+				(c) => ({
+					sheetId: c.sheetId,
+				}),
+			],
+		},
+		sheetValues        : {
+			type : "string",
+			label: "Sheet values from prior step",
+		},
+		name               : {
+			label      : "Artist Name",
+			description: "Headliner",
+			type       : "string",
+		},
+		co_headliner_1     : {
+			label      : "Co-Headliner 1",
+			description: "1st Co-Headliner",
+			type       : "string",
+		},
+		co_headliner_2     : {
+			label      : "Co-Headliner 2",
+			description: "2nd Co-Headliner",
+			type       : "string",
+		},
+		co_headliner_3     : {
+			label      : "Co-Headliner 3",
+			description: "3rd Co-Headliner",
+			type       : "string",
+		},
+		co_headliner_4     : {
+			label      : "Co-Headliner 4",
+			description: "4th Co-Headliner",
+			type       : "string",
+		},
+		year               : {
+			label      : "Year",
+			description: "Year of the project.",
+			type       : "string",
+		},
+		tourMarketer       : {
+			type : "string",
+			label: spreadsheetProps[1],
+		},
+		romeTourMarketingID: {
+			type    : "string",
+			label   : spreadsheetProps[2],
+			optional: true,
+		},
+	},
+	async run({$}) {
+		let projectName = this.name;
+		let coHeadliners = [
+			this.co_headliner_1,
+			this.co_headliner_2,
+			this.co_headliner_3,
+			this.co_headliner_4,
+		]
+		for(let i = 0; i < coHeadliners.length; i++) {
+			projectName = concatName(projectName, coHeadliners[i]);
+		}
+		projectName = projectName + ' ' + this.year;
 
-    var spreadsheetPropValues = [
-		projectName,
-      this.tourMarketer,
-      this.romeTourMarketingID
-    ]
-    let sheetValues = this.sheetValues;
+		var spreadsheetPropValues = [
+			projectName,
+			this.tourMarketer,
+			this.romeTourMarketingID
+		]
+		let sheetValues = this.sheetValues;
 
-	var sheetValueReplacements = [];
-    for(let i = 0; i < spreadsheetProps?.length; i++) {
-      if(spreadsheetPropValues[i] && typeof spreadsheetPropValues[i] !== 'undefined' && exists(sheetValues, spreadsheetProps[i])) {
-	      sheetValueReplacements.push(multidimentionalForSearchLoop(spreadsheetProps[i], sheetValues, spreadsheetProps[0]));
-      }
-    }
+		var sheetValueReplacements = [];
+		for(let i = 0; i < spreadsheetProps?.length; i++) {
+			if(spreadsheetPropValues[i] && typeof spreadsheetPropValues[i] !== 'undefined' && exists(sheetValues, spreadsheetProps[i])) {
+				sheetValueReplacements.push(multidimentionalForSearchLoop(spreadsheetProps[i], sheetValues, spreadsheetProps[0]));
+			}
+		}
 
-    var updatingValueAndCells = [];
-    $.export("$summary", sheetValueReplacements);
-    for(let i = 0; i < sheetValueReplacements?.length; i++) {
-      updatingValueAndCells.push({value: spreadsheetPropValues[i], cell: sheetValueReplacements[i][1]});
-      const request = {
-        spreadsheetId   : this.sheetId,
-        range           : `${this.sheetName}!${sheetValueReplacements[i][1]}:${sheetValueReplacements[i][1]}`,
-        valueInputOption: "USER_ENTERED",
-        resource        : {
-          values: [
-            [
-              spreadsheetPropValues[i],
-            ],
-          ],
-        },
-      };
-      await this.googleSheets.updateSpreadsheet(request);
-    }
-    return "Updated: " + JSON.stringify(updatingValueAndCells);
-  },
+		var updatingValueAndCells = [];
+		$.export("$summary", sheetValueReplacements);
+		for(let i = 0; i < sheetValueReplacements?.length; i++) {
+			updatingValueAndCells.push({value: spreadsheetPropValues[i], cell: sheetValueReplacements[i][1]});
+			const request = {
+				spreadsheetId   : this.sheetId,
+				range           : `${this.sheetName}!${sheetValueReplacements[i][1]}:${sheetValueReplacements[i][1]}`,
+				valueInputOption: "USER_ENTERED",
+				resource        : {
+					values: [
+						[
+							spreadsheetPropValues[i],
+						],
+					],
+				},
+			};
+			//await this.googleSheets.updateSpreadsheet(request);
+		}
+		return "Updated: " + JSON.stringify(updatingValueAndCells);
+	},
 };
 
 function concatName(projectName, coHeadliner) {
@@ -159,7 +158,7 @@ function multidimentionalForSearchLoop(propItem, sheetValues, existingSheetEvent
 				console.log("multidimentionalForSearchLoop > propItem : '" + propItem + "'");
 				console.log("multidimentionalForSearchLoop > cellForNewValue : '" + cellForNewValue + "'");
 
-				return [propItem,cellForNewValue];
+				return [propItem, cellForNewValue];
 			}
 		}
 	}
