@@ -10,7 +10,7 @@ export default {
   key        : "update-cell-bu",
   name       : "Update Cell BU",
   description: "Update a cell in a spreadsheet",
-  version    : "0.0.9",
+  version    : "0.0.10",
   type       : "action",
   props      : {
     googleSheets,
@@ -98,7 +98,7 @@ export default {
     ]
     let sheetValues = this.sheetValues;
 
-	let sheetValueReplacements = [];
+	var sheetValueReplacements = [];
     for(let i = 0; i < spreadsheetProps?.length; i++) {
       if(exists(sheetValues, spreadsheetProps[i])) {
 	      sheetValueReplacements.push(multidimentionalForSearchLoop(spreadsheetProps[i]));
