@@ -10,7 +10,7 @@ export default {
 	key        : "update-cell-bu",
 	name       : "Update Cell BU",
 	description: "Update a cell in a spreadsheet",
-	version    : "0.0.16",
+	version    : "0.0.17",
 	type       : "action",
 	props      : {
 		googleSheets,
@@ -120,7 +120,7 @@ export default {
 					],
 				},
 			};
-			//await this.googleSheets.updateSpreadsheet(request);
+			await this.googleSheets.updateSpreadsheet(request);
 		}
 		return "Updated: " + JSON.stringify(updatingValueAndCells);
 	},
