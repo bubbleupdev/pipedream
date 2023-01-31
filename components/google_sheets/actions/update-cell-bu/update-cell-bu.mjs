@@ -10,7 +10,7 @@ export default {
   key        : "update-cell-bu",
   name       : "Update Cell BU",
   description: "Update a cell in a spreadsheet",
-  version    : "0.0.13",
+  version    : "0.0.14",
   type       : "action",
   props      : {
     googleSheets,
@@ -98,10 +98,9 @@ export default {
     ]
     let sheetValues = this.sheetValues;
 
-	console.log(`romeTourMarketingID: ${spreadsheetPropValues[2]}`)
 	var sheetValueReplacements = [];
     for(let i = 0; i < spreadsheetProps?.length; i++) {
-      if(spreadsheetPropValues[i] && exists(sheetValues, spreadsheetProps[i])) {
+      if(spreadsheetPropValues[i] && typeof spreadsheetPropValues[i] !== 'undefined' && exists(sheetValues, spreadsheetProps[i])) {
 	      sheetValueReplacements.push(multidimentionalForSearchLoop(spreadsheetProps[i], sheetValues, spreadsheetProps[0]));
       }
     }
