@@ -5,7 +5,7 @@ export default {
   key: "google_drive-create-folder",
   name: "Create Folder BU",
   description: "Create a new empty folder. [See the docs](https://developers.google.com/drive/api/v3/reference/files/create) for more information",
-  version: "0.0.30",
+  version: "0.0.31",
   type: "action",
   props: {
     googleDrive,
@@ -45,6 +45,11 @@ export default {
       description: "4th Co-Headliner",
       type       : "string",
     },
+    year: {
+      label      : "Year",
+      description: "Year of the project.",
+      type       : "string",
+    },
     createIfExists: {
       type: "boolean",
       label: "Create If Exists?",
@@ -69,6 +74,7 @@ export default {
     for(let i = 0; i < coHeadliners.length; i++) {
       projectName = concatName(projectName, coHeadliners[i]);
     }
+    projectName = projectName + ' ' + this.year;
 
     let folder;
     if (createIfExists == false) {//checking "false" because if this optional prop may not be given
