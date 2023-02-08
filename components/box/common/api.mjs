@@ -32,6 +32,32 @@ export class boxApi {
         return await this.post(`/folders/${folderId}/metadata/${scope}/${metadataTemplate}`, metadata)
     }
 
+    async createMetadataCascadePolicy(folderId, metadataTemplate, scope = 'global') {
+        return await this.post(`/metadata_cascade_policies`, {
+            scope,
+            folder_id: folderId,
+            templateKey: metadataTemplate,
+        })
+    }
+
+    async addWebLink(folderId, name, url, description = '') {
+        return await this.post('/web_links', {
+            url,
+            name,
+            description,
+            parent: {id: folderId},
+        })
+    }
+
+    async createSharedLink(folderId, access = 'open', permissions = { can_edit: false }) {
+        return await this.put(`/folders/${folderId}`, {
+            shared_link: {
+                access,
+                permissions,
+            },
+        })
+    }
+
     async get(url) {
         return await this.sendRequest(url)
     }
