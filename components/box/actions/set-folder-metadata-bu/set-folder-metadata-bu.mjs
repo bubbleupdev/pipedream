@@ -2,7 +2,7 @@ import { boxApi } from "../../common/api.mjs"
 
 export default defineComponent({
   name: "Set Folder Metadata (BU)",
-  version: "0.0.4",
+  version: "0.0.5",
   key: "set-folder-metadata-bu",
   description: "Set cascading metadata on a folder",
   type: "action",
