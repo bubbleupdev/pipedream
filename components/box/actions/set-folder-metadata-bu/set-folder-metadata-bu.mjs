@@ -34,7 +34,7 @@ export default defineComponent({
     cascade: {
       type: 'boolean',
       label: 'Cascade Metadata?',
-      descripton: 'Cascade metadata to new child folders/files?',
+      // descripton: 'Cascade metadata to new child folders/files?',
       default: true,
     },
   },
