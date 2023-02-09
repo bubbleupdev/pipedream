@@ -2,7 +2,7 @@ import { boxApi } from "../../common/api.mjs"
 
 export default {
   name: "Add Web Link (BU)",
-  version: "0.0.1",
+  version: "0.0.2",
   key: "add-web-link-bu",
   description: "Add an external web link to a folder",
   type: "action",
@@ -27,7 +27,7 @@ export default {
       description: "URL of the link.",
     },
     linkDesc: {
-      type: 'boolean',
+      type: 'string',
       label: 'Link Description',
       description: 'Description of the link',
     },
