@@ -5,7 +5,7 @@ export default {
   key: "google_drive-create-folder",
   name: "Create Folder BU",
   description: "Create a new empty folder. [See the docs](https://developers.google.com/drive/api/v3/reference/files/create) for more information",
-  version: "0.0.32",
+  version: "0.0.33",
   type: "action",
   props: {
     googleDrive,
@@ -64,7 +64,7 @@ export default {
       createIfExists,
     } = this;
 
-    let projectName = name;
+    var projectName = name;
     let coHeadliners = [
       this.co_headliner_1,
       this.co_headliner_2,
@@ -75,13 +75,14 @@ export default {
       projectName = concatName(projectName, coHeadliners[i]);
     }
     projectName = projectName + ' ' + this.year;
+    console.log(`projectName : ${projectName}`);
 
     let folder;
-    if (createIfExists == false) {//checking "false" because if this optional prop may not be given
+    if (createIfExists === false) {//checking "false" because if this optional prop may not be given
       let folders = await findChildWithinParent(parentId, projectName, this.drive, this.googleDrive);
       for (let f of folders) {
         //console.log(`Folder name checked: ${f.name}`);
-        if (f.name == projectName) {
+        if (f.name === projectName) {
           folder = f;
           //console.log(`Folder name found: ${f.name}`);
           break;
@@ -92,10 +93,8 @@ export default {
         return folder;
       }
     }
-    const resp = await this.googleDrive.createFolder({
-      projectName,
-      parentId,
-    });
+    const resp = await this.googleDrive.createFolder({projectName,parentId,});
+    console.log(`resp from googleDrive.createFolder: ${JSON.stringify(resp)}`)
     $.export("$summary", "Successfully created a new folder, '" + resp.name + "'");
     return resp;
   },
@@ -103,7 +102,7 @@ export default {
 
 function concatName(projectName, coHeadliner) {
   if(coHeadliner) {
-    return projectName + ' / ' + coHeadliner;
+    return projectName + ' | ' + coHeadliner;
   }
   return projectName;
 }

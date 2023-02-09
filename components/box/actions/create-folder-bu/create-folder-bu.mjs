@@ -3,7 +3,7 @@ import axios from "axios";
 
 export default {
 	name       : "Create Folder BU",
-	version    : "0.0.6",
+	version    : "0.0.7",
 	key        : "Create-folder-BU",
 	description: "Create a folder. [See the docs here](https://developer.box.com/reference/post-folders/)",
 	type       : "action",
@@ -68,7 +68,7 @@ export default {
 
 function concatName(projectName, coHeadliner) {
 	if(coHeadliner) {
-		return projectName + ' / ' + coHeadliner;
+		return projectName + ' | ' + coHeadliner;
 	}
 	return projectName;
 }
