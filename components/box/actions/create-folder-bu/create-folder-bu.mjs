@@ -3,7 +3,7 @@ import axios from "axios";
 
 export default {
 	name       : "Create Folder BU",
-	version    : "0.0.5",
+	version    : "0.0.6",
 	key        : "Create-folder-BU",
 	description: "Create a folder. [See the docs here](https://developer.box.com/reference/post-folders/)",
 	type       : "action",
@@ -16,11 +16,6 @@ export default {
 			type       : "string",
 			label      : "New parent folder ID",
 			description: "The destination folder to copy the folder to.",
-		},
-		newFolderName : {
-			type       : "string",
-			label      : "New folder Name",
-			description: "An new name for the copied folder.",
 		},
 		name          : {
 			label      : "Artist Name",
