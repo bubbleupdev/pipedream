@@ -61,7 +61,7 @@ export default {
 			projectName = concatName(projectName, coHeadliners[i]);
 		}
 
-		var apiResult = await makeApiCall($, this);
+		var apiResult = await makeApiCall($, this, projectName);
 		var folderExists = apiResult.data.code === "item_name_in_use";
 		if(folderExists) {
 			return apiResult.data.context_info.conflicts[0];
@@ -78,7 +78,7 @@ function concatName(projectName, coHeadliner) {
 	return projectName;
 }
 
-async function makeApiCall($, step) {
+async function makeApiCall($, step, projectName) {
 	return await axios({
 		method        : 'post',
 		url           : `https://api.box.com/2.0/folders`,
@@ -92,7 +92,7 @@ async function makeApiCall($, step) {
 			parent: {
 				id: `${step.parentFolderId}`
 			},
-			name  : `${step.newFolderName}`
+			name  : `${projectName}`
 		},
 		validateStatus: function(status) {
 			return status >= 200 || status == 409; // 409 means folder name already exists
