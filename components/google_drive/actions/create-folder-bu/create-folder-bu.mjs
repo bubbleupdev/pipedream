@@ -5,7 +5,7 @@ export default {
   key: "google_drive-create-folder",
   name: "Create Folder BU",
   description: "Create a new empty folder. [See the docs](https://developers.google.com/drive/api/v3/reference/files/create) for more information",
-  version: "0.0.35",
+  version: "0.0.36",
   type: "action",
   props: {
     googleDrive,
@@ -21,34 +21,39 @@ export default {
       type       : "string",
     },
     name          : {
-      label      : "Artist Name",
-      description: "Headliner",
+      label      : "Name",
+      description: "Headliner or Folder Name",
       type       : "string",
     },
     co_headliner_1: {
       label      : "Co-Headliner 1",
       description: "1st Co-Headliner",
       type       : "string",
+      optional: true,
     },
     co_headliner_2: {
       label      : "Co-Headliner 2",
       description: "2nd Co-Headliner",
       type       : "string",
+      optional: true,
     },
     co_headliner_3: {
       label      : "Co-Headliner 3",
       description: "3rd Co-Headliner",
       type       : "string",
+      optional: true,
     },
     co_headliner_4: {
       label      : "Co-Headliner 4",
       description: "4th Co-Headliner",
       type       : "string",
+      optional: true,
     },
     year: {
       label      : "Year",
       description: "Year of the project.",
       type       : "string",
+      optional: true,
     },
     createIfExists: {
       type: "boolean",
@@ -75,7 +80,9 @@ export default {
     for(let i = 0; i < coHeadliners.length; i++) {
       projectName = concatName(projectName, coHeadliners[i]);
     }
-    projectName = projectName + ' ' + year;
+    if(year) {
+      projectName = projectName + ' ' + year;
+    }
 
     let folder;
     if (createIfExists === false) {//checking "false" because if this optional prop may not be given
