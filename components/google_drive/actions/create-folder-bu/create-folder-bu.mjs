@@ -5,7 +5,7 @@ export default {
   key: "google_drive-create-folder",
   name: "Create Folder BU",
   description: "Create a new empty folder. [See the docs](https://developers.google.com/drive/api/v3/reference/files/create) for more information",
-  version: "0.0.36",
+  version: "0.0.37",
   type: "action",
   props: {
     googleDrive,
@@ -100,6 +100,7 @@ export default {
         return folder;
       }
     }
+    console.log(`projectName formed as: "${projectName}"`)
     const resp = await this.googleDrive.createFolder({name,parentId});
     $.export("$summary", "Successfully created a new folder, '" + resp.name + "'");
     return resp;
