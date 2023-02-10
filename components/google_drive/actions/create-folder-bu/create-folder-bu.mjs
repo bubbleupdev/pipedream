@@ -5,7 +5,7 @@ export default {
   key: "google_drive-create-folder",
   name: "Create Folder BU",
   description: "Create a new empty folder. [See the docs](https://developers.google.com/drive/api/v3/reference/files/create) for more information",
-  version: "0.0.34",
+  version: "0.0.35",
   type: "action",
   props: {
     googleDrive,
@@ -62,10 +62,11 @@ export default {
       parentId,
       name,
       createIfExists,
+      year
     } = this;
 
     var projectName = name;
-    let coHeadliners = [
+    var coHeadliners = [
       this.co_headliner_1,
       this.co_headliner_2,
       this.co_headliner_3,
@@ -74,7 +75,7 @@ export default {
     for(let i = 0; i < coHeadliners.length; i++) {
       projectName = concatName(projectName, coHeadliners[i]);
     }
-    projectName = projectName + ' ' + this.year;
+    projectName = projectName + ' ' + year;
 
     let folder;
     if (createIfExists === false) {//checking "false" because if this optional prop may not be given
@@ -92,7 +93,7 @@ export default {
         return folder;
       }
     }
-    const resp = await this.googleDrive.createFolder({projectName,parentId,});
+    const resp = await this.googleDrive.createFolder({name,parentId});
     $.export("$summary", "Successfully created a new folder, '" + resp.name + "'");
     return resp;
   },
