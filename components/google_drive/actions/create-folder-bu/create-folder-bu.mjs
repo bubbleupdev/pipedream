@@ -5,7 +5,7 @@ export default {
   key: "google_drive-create-folder",
   name: "Create Folder BU",
   description: "Create a new empty folder. [See the docs](https://developers.google.com/drive/api/v3/reference/files/create) for more information",
-  version: "0.0.39",
+  version: "0.0.40",
   type: "action",
   props: {
     googleDrive,
@@ -86,7 +86,7 @@ export default {
 
     let folder;
     if (createIfExists === false) {//checking "false" because if this optional prop may not be given
-      let folders = await findChildWithinParent(parentId, projectName, this.drive, this.googleDrive);
+      let folders = await findChildWithinParent(parentId, name, this.drive, this.googleDrive);
       for (let f of folders) {
         //console.log(`Folder name checked: ${f.name}`);
         if (f.name === projectName) {
