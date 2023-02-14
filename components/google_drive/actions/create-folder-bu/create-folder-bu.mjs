@@ -1,11 +1,11 @@
 import googleDrive from "../../google_drive.app.mjs";
-import { GOOGLE_DRIVE_FOLDER_MIME_TYPE } from "../../constants.mjs";
+//import { GOOGLE_DRIVE_FOLDER_MIME_TYPE } from "../../constants.mjs";
 
 export default {
   key: "google_drive-create-folder",
   name: "Create Folder BU",
   description: "Create a new empty folder. [See the docs](https://developers.google.com/drive/api/v3/reference/files/create) for more information",
-  version: "0.0.40",
+  version: "0.0.41",
   type: "action",
   props: {
     googleDrive,
@@ -63,7 +63,7 @@ export default {
     },
   },
   async run({ $ }) {
-    const {
+    var {
       parentId,
       name,
       createIfExists,
@@ -83,13 +83,13 @@ export default {
     if(year) {
       projectName = projectName + ' ' + year;
     }
-
+    name = projectName;
     let folder;
     if (createIfExists === false) {//checking "false" because if this optional prop may not be given
       let folders = await findChildWithinParent(parentId, name, this.drive, this.googleDrive);
       for (let f of folders) {
         //console.log(`Folder name checked: ${f.name}`);
-        if (f.name === projectName) {
+        if(f.name === name) {
           folder = f;
           //console.log(`Folder name found: ${f.name}`);
           break;
@@ -100,8 +100,8 @@ export default {
         return folder;
       }
     }
-    console.log(`projectName formed as: "${projectName}"`)
-    const resp = await this.googleDrive.createFolder({name,parentId});
+    //console.log(`projectName formed as: "${name}"`)
+    const resp = await this.googleDrive.createFolder({name, parentId});
     $.export("$summary", "Successfully created a new folder, '" + resp.name + "'");
     return resp;
   },
