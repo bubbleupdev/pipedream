@@ -27,7 +27,7 @@ export default {
 
 async function makeApiCall($, step) {
 	return await axios({
-		method        : 'post',
+		method        : 'get',
 		url           : `https://api.box.com/2.0/folders/${step.folderId}/items`,
 		headers       : {
 			"Authorization": `Bearer ${step.box.$auth.oauth_access_token}`,
