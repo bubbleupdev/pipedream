@@ -3,7 +3,7 @@ import axios from "axios";
 
 export default {
 	name       : "List items in folder (BU)",
-	version    : "0.0.1",
+	version    : "0.0.2",
 	key        : "list-items-in-folder-bu",
 	description: "List items in a given folder",
 	type       : "action",
