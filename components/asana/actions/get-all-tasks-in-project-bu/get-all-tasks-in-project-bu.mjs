@@ -46,6 +46,6 @@ async function returnAllTasks($, step) {
 async function getAllTasks($, step) {
 	return await step.asana._makeRequest(`projects/${step.project_gid}/tasks`, {
 		method: "get",
-		data  : {},
+		// data  : {},
 	}, $);
 }
