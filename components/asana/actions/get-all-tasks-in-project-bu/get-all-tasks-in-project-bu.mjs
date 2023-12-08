@@ -2,7 +2,7 @@ import asana from "../../asana.app.mjs";
 
 export default {
 	name       : "Get All Tasks In Project BU",
-	version    : "0.0.5",
+	version    : "0.0.6",
 	key        : "get-all-tasks-in-project-bu",
 	description: "",
 	props      : {
