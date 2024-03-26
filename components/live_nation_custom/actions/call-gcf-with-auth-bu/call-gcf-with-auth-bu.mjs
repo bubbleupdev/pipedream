@@ -1,6 +1,6 @@
 module.exports = defineComponent({
 	name   : "Call GCF With Auth",
-	version: "0.0.4",
+	version: "0.0.5",
 	key    : "call-gcf-with-auth",
 	props: {
 		google_cloud: {
@@ -21,29 +21,28 @@ module.exports = defineComponent({
 	async run({steps, $}) {
 		const key = JSON.parse(this.google_cloud.$auth.key_json)
 		const {JWT} = require('google-auth-library');
-
-		async function main() {
-			const url = this.gcf_trigger;
-			const client = new JWT({
-				email: key.client_email,
-				key  : key.private_key,
-			});
-			const token = await client.fetchIdToken(url);
-			const headers = new Map([
-				[
-					'Authorization',
-					`Bearer ${token}`
-				],
-				[
-					'Content-Type',
-					`application/json`
-				]
-			]);
-			const payload = this.data;
-			const res = await client.request({url, headers, method: 'POST',data : payload});
-			console.log(res.data);
-		}
-
-		return await main()
+		return await main(this, key, JWT)
 	},
 })
+
+async function main(step, key, JWT) {
+	const url = step.gcf_trigger;
+	const client = new JWT({
+		email: key.client_email,
+		key  : key.private_key,
+	});
+	const token = await client.fetchIdToken(url);
+	const headers = new Map([
+		[
+			'Authorization',
+			`Bearer ${token}`
+		],
+		[
+			'Content-Type',
+			`application/json`
+		]
+	]);
+	const payload = step.data;
+	const res = await client.request({url, headers, method: 'POST', data: payload});
+	return res.data
+}
