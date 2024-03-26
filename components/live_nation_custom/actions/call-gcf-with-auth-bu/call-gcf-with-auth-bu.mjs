@@ -1,6 +1,6 @@
 module.exports = defineComponent({
 	name   : "Call GCF With Auth",
-	version: "0.0.5",
+	version: "0.0.6",
 	key    : "call-gcf-with-auth",
 	props: {
 		google_cloud: {
@@ -20,12 +20,12 @@ module.exports = defineComponent({
 	methods: {},
 	async run({steps, $}) {
 		const key = JSON.parse(this.google_cloud.$auth.key_json)
-		const {JWT} = require('google-auth-library');
-		return await main(this, key, JWT)
+		return await main(this, key)
 	},
 })
 
-async function main(step, key, JWT) {
+async function main(step, key) {
+	const {JWT} = require('google-auth-library');
 	const url = step.gcf_trigger;
 	const client = new JWT({
 		email: key.client_email,
