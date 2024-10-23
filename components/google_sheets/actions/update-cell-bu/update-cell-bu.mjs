@@ -11,7 +11,7 @@ export default {
 	key        : "update-cell-bu",
 	name       : "Update Cell BU",
 	description: "Update a cell in a spreadsheet",
-	version    : "0.0.18",
+	version    : "0.0.19",
 	type       : "action",
 	props      : {
 		googleSheets,
@@ -58,11 +58,6 @@ export default {
 			description: "3rd Co-Headliner",
 			type       : "string",
 		},
-		co_headliner_4     : {
-			label      : "Co-Headliner 4",
-			description: "4th Co-Headliner",
-			type       : "string",
-		},
 		year               : {
 			label      : "Year",
 			description: "Year of the project.",
@@ -84,8 +79,6 @@ export default {
 		let coHeadliners = [
 			this.co_headliner_1,
 			this.co_headliner_2,
-			this.co_headliner_3,
-			this.co_headliner_4,
 		]
 		for(let i = 0; i < coHeadliners.length; i++) {
 			projectName = concatName(projectName, coHeadliners[i]);
