@@ -11,7 +11,7 @@ export default {
 	key        : "update-cell-bu",
 	name       : "Update Cell BU",
 	description: "Update a cell in a spreadsheet",
-	version    : "0.0.19",
+	version    : "0.0.20",
 	type       : "action",
 	props      : {
 		googleSheets,
@@ -51,11 +51,6 @@ export default {
 		co_headliner_2     : {
 			label      : "Co-Headliner 2",
 			description: "2nd Co-Headliner",
-			type       : "string",
-		},
-		co_headliner_3     : {
-			label      : "Co-Headliner 3",
-			description: "3rd Co-Headliner",
 			type       : "string",
 		},
 		year               : {
