@@ -37,18 +37,6 @@ export default {
       type       : "string",
       optional: true,
     },
-    co_headliner_3: {
-      label      : "Co-Headliner 3",
-      description: "3rd Co-Headliner",
-      type       : "string",
-      optional: true,
-    },
-    co_headliner_4: {
-      label      : "Co-Headliner 4",
-      description: "4th Co-Headliner",
-      type       : "string",
-      optional: true,
-    },
     year: {
       label      : "Year",
       description: "Year of the project.",
@@ -74,8 +62,6 @@ export default {
     var coHeadliners = [
       this.co_headliner_1,
       this.co_headliner_2,
-      this.co_headliner_3,
-      this.co_headliner_4,
     ]
     for(let i = 0; i < coHeadliners.length; i++) {
       projectName = concatName(projectName, coHeadliners[i]);
